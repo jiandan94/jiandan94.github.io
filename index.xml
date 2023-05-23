@@ -1,0 +1,44 @@
+<?xml version="1.0" encoding="utf-8" standalone="yes"?>
+<rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
+  <channel>
+    <title>KAI&#39;s academic page</title>
+    <link>https://jiandan94.github.io/academic/</link>
+    <description>Recent content on KAI&#39;s academic page</description>
+    <generator>Hugo -- gohugo.io</generator>
+    <language>en-us</language><atom:link href="https://jiandan94.github.io/academic/index.xml" rel="self" type="application/rss+xml" />
+    <item>
+      <title>Selected Publications</title>
+      <link>https://jiandan94.github.io/academic/post/selected-publications/</link>
+      <pubDate>Mon, 01 Jan 0001 00:00:00 +0000</pubDate>
+      
+      <guid>https://jiandan94.github.io/academic/post/selected-publications/</guid>
+      <description>Preprints and Submitted  Fused robust geometric nonparallel hyperplane support vector machine for pattern classificationRuiyao Gao, Qi Kai, Yang Hu*.  Accepted and published   Capped asymmetric elastic net support vector machine for robust binary classificationQi Kai, Yang Hu*. [PaperLink]
+International Journal of Intelligent Systems, 2023, 2023(1): 2201330 .
+  LS-GNHSVM: a novel unified nonparallel hyperplane classifier with geometrical rationalityQi Kai, Yang Hu*. [PaperLink]
+Expert Systems with Applications, 2023, 215: 119413.</description>
+    </item>
+    
+    <item>
+      <title>Talks</title>
+      <link>https://jiandan94.github.io/academic/post/talks/</link>
+      <pubDate>Mon, 01 Jan 0001 00:00:00 +0000</pubDate>
+      
+      <guid>https://jiandan94.github.io/academic/post/talks/</guid>
+      <description>Joint rescaled asymmetric least squared nonparallel support vector machine with a stochastic quasi-Newton based algorithm (Student best paper)The 8th annual conference of CQSIAM (2022)，oral reportChongqing · China
+  Joint sparse principal component regression with robust property (Student best paper)The 7th annual conference of CQSIAM (2021)，oral reportChongqing · China
+  Elastic net nonparallel hyperplane support vector machine and its geometrical rationalityThe 18th annual conference of CSIAM (2020)，oral reportHunan · China</description>
+    </item>
+    
+    <item>
+      <title>Teaching and Services</title>
+      <link>https://jiandan94.github.io/academic/post/teaching-and-services/</link>
+      <pubDate>Mon, 01 Jan 0001 00:00:00 +0000</pubDate>
+      
+      <guid>https://jiandan94.github.io/academic/post/teaching-and-services/</guid>
+      <description>Teaching Previously, I was a teaching assistant in Chongqing Unversity for:
+ Linear Algebra, 2019-2023 Calculus II, 2020 Spring Mathematics Modeling, 2019 Fall Probability theory and mathematical statistics, 2017 Fall  Professional services I have served as an anonymous reviewer for the following journals:
+ IEEE Transactions on Cybernetics Pattern Recognition Applied Intelligence The Journal of Supercomputing Human-centric Computing and Information Sciences Journal of Computational Methods in Sciences and Engineering  </description>
+    </item>
+    
+  </channel>
+</rss>
