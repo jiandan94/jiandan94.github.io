@@ -1,0 +1,119 @@
+<!DOCTYPE html>
+<html lang="en-us">
+  <head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>Git基本操作 | KAI&#39;s academic page</title>
+    <link rel="stylesheet" href="/css/style.css" />
+    <link rel="stylesheet" href="/css/fonts.css" />
+    
+  </head>
+
+  <body>
+    <nav>
+    <ul class="menu">
+      
+      <li><a href="/">Home</a></li>
+      
+      <li><a href="/post/selected-publications">Publications</a></li>
+      
+      <li><a href="/post/talks">Talks</a></li>
+      
+      <li><a href="/post/teaching-and-services">Teaching and Services</a></li>
+      
+      <li><a href="https://www.qikai.site/blog">Blog</a></li>
+      
+    </ul>
+    <hr/>
+    </nav>
+
+<div class="article-meta">
+<h1><span class="title">Git基本操作</span></h1>
+
+<h2 class="date">2020/07/25</h2>
+</div>
+
+<main>
+<h2 id="1-git的工作原理">1 Git的工作原理</h2>
+<p>关于Git的简单介绍可以参照我的<a href="https://jiandan94.gitee.io/2020/07/git-introduction/">这篇博客</a>。安装好Git之后，我们就要学会利用Git建立本地项目的代码仓库，以及同远程仓库进行同步。不过在学习搭建本地仓库之前，我们需要了解Git的工作原理，以便理解后续各段代码背后的含义。</p>
+<img src="http://jiandan94.gitee.io/md-figures/git/git基本原理.png" width="600"/>
+<p>如上图所示。假设我们在本地计算机上建立一个仓库（文件夹）以存放项目的各个文件。进入该文件夹，也即是进入工作目录（working space）。然而，你直接在工作目录里面增加一个文件，比如files文件，从Git的视角来看，这个文件此时还不属于本地仓库的内容——换句话说，Git此时还没有登记该文件的信息。通过命令</p>
+<pre><code class="language-R">$ git add files
+</code></pre>
+<p>将files文件<strong>移到</strong>暂存区（Staged(indexed)）中，表明该文件即将存入本地仓库中。通过命令</p>
+<pre><code class="language-R">$ git commit -m &quot;提交说明信息&quot;
+</code></pre>
+<p>将暂存区的files文件<strong>移到</strong>本地仓库（Repository）中，并加上本次提交的的说明信息以方便以后快速了解本次操作的内容和目的。</p>
+<blockquote>
+<p>上面我多次用到<strong>移到</strong>这个词，但是在仓库中并没有真的出现Staged或者Repository等文件夹或内容。实际上，以上的操作只是Git用自己的方式记录仓库中文件的变化，这些变动信息保存在仓库的<code>.git</code>隐藏文件夹中。</p>
+</blockquote>
+<p>最后，我们通过命令</p>
+<pre><code class="language-R">$ git push
+</code></pre>
+<p>将本地的仓库同步到远程的仓库（Remote）中，完成本地和远程的连接。图中右侧的命令是每个阶段的逆操作。</p>
+<p>以上的介绍可以看出在Git的视角下，本地仓库的建立、改动以及和远程仓库的同步有着一套自身的规则，理解这套规则和理念有助于git的操作使用。</p>
+<h2 id="2-本地仓库初始化">2 本地仓库初始化</h2>
+<p>我们在本地计算机上建立一个文件夹来存放项目文件，然后进入到该文件中初始化仓库</p>
+<pre><code class="language-R">$ mkdir test  
+$ cd test
+$ git init  # 初始化仓库
+</code></pre>
+<p>此时，在test文件夹中便会出现一个<code>.git</code>隐藏文件夹，其中存放了仓库的各种信息如仓库的分支、操作的记录等。</p>
+<p>现在我们通过<code>git status</code>查看仓库的当前状态，返回结果</p>
+<pre><code class="language-R">$ git status
+On branch master  # 在master分支上
+No commits yet  # 没有仓库操作
+nothing to commit (create/copy files and use &quot;git add&quot; to track)
+</code></pre>
+<p>最后一句提示我们可以使用<code>git add</code>向暂存区添加文件。我们先创建一个文件aa.md，然后将其移到暂存区</p>
+<pre><code class="language-R">$ touch aa.md
+$ git add aa.md
+</code></pre>
+<p>再查看当前状态</p>
+<pre><code class="language-R">$ git status
+On branch master
+No commits yet
+Changes to be committed:
+  (use &quot;git rm --cached &lt;file&gt;...&quot; to unstage)
+        new file:   aa.md
+</code></pre>
+<p>表明我们可以向仓库中提交aa.md，也使用<code>git rm --cached aa.md</code>将aa.md文件从暂存区移除。我们将文件提交到本地仓库，并再次查看当前的状态</p>
+<pre><code class="language-R">$ git commit -m &quot;upload aa.md&quot;
+[master (root-commit) cbf4f11] upload aa.md
+ 1 file changed, 0 insertions(+), 0 deletions(-)
+ create mode 100644 aa.md
+$ git status
+On branch master
+nothing to commit, working tree clean
+</code></pre>
+<p>可见，Git已经将本次的改动记录下来，当前的工作区是干净的。</p>
+<h2 id="3-与远程仓库同步">3 与远程仓库同步</h2>
+<p>为了远程仓库可以识别本地仓库的作者信息，我们需要在本地设置用户名和用户邮箱</p>
+<pre><code class="language-R">$ git config --global user.name &quot;****&quot;
+$ git config --global user.email &quot;****&quot;
+</code></pre>
+<p>下面搭建远程仓库。远程仓库有很多平台，比如国外的Github和国内的Gitee，Github使用更加广泛、友好但国内访问速度很慢，这里用Gitee举例。我们访问Gitee官网，按照要求注册登陆后，创建一个仓库。</p>
+<p>然后在本地生成SSH密钥，以保证本地端和远程端的通信安全以及免密码登陆远程仓库，命令为</p>
+<pre><code class="language-R">$ ssh-keygen
+</code></pre>
+<p>生成的密钥在本地计算机用户文件夹下，将<code>.ssh</code>文件夹中的<code>id_rsa.pub</code>中的内容粘贴到Gitee账户中（设置&gt;SSH公钥）即可。</p>
+<p>接着，我们在仓库的根目录下打开Git，连接到远程仓库</p>
+<pre><code class="language-R">$ git remote add origin ****  # 这里的****是远程的仓库的SSH链接
+</code></pre>
+<p>最后，我们将本地仓库同步到远程仓库，命令为</p>
+<pre><code class="language-R">$ git push -u origin master
+</code></pre>
+<p>此时再去刷新远程仓库，就可以看到本地仓库的内容了。</p>
+
+</main>
+
+  <footer>
+  
+  
+  <hr/>
+  © Kai Qi 2019 &ndash; 2023 | <a href="https://github.com/jiandan94">Github</a> | <a href="https://scholar.google.com.hk/citations?user=-9xB_VQAAAAJ&amp;hl=zh-CN">Google Scholar</a>
+  
+  </footer>
+  </body>
+</html>
+

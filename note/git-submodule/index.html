@@ -1,0 +1,115 @@
+<!DOCTYPE html>
+<html lang="en-us">
+  <head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>Git-Submodule的基本使用 | KAI&#39;s academic page</title>
+    <link rel="stylesheet" href="/css/style.css" />
+    <link rel="stylesheet" href="/css/fonts.css" />
+    
+  </head>
+
+  <body>
+    <nav>
+    <ul class="menu">
+      
+      <li><a href="/">Home</a></li>
+      
+      <li><a href="/post/selected-publications">Publications</a></li>
+      
+      <li><a href="/post/talks">Talks</a></li>
+      
+      <li><a href="/post/teaching-and-services">Teaching and Services</a></li>
+      
+      <li><a href="https://www.qikai.site/blog">Blog</a></li>
+      
+    </ul>
+    <hr/>
+    </nav>
+
+<div class="article-meta">
+<h1><span class="title">Git-Submodule的基本使用</span></h1>
+
+<h2 class="date">2020/07/28</h2>
+</div>
+
+<main>
+<h2 id="1-什么是git-submodule">1 什么是Git-Submodule</h2>
+<p>在进行项目开发和管理的过程中，我们经常遇到这种情况：自己的A项目需要引用另一B项目中的内容，直接将B项目中的文件克隆合并到A项目中显得臃肿，不能保证两者的独立性；此外，直接克隆合并的方法也无法记录对于B项目的改动信息。</p>
+<p>Git给出了一种解决方案：<strong>将B项目作为A项目的Submodule进行植入。</strong></p>
+<p>所谓Submodule，就是将一个代码仓库（次）作为另一个代码仓库（主）的子模块。在主项目开发过程中，既能引入Submodule中的内容，又能保证两者的相对独立。</p>
+<h2 id="2-submodule的创建">2 Submodule的创建</h2>
+<p>首先，我们在Gitee上创建两个新的仓库作为，其中一个作为主仓库（main-repository）而另一个作为子仓库（sub-module）。当然，刚刚创建的仓库还是平等的，没有主次之分。</p>
+<p>现在，我们在本地计算机的桌面上右键Git Bash Here打开Git终端，将main-repository仓库克隆到本地来</p>
+<pre><code class="language-R"># git clone &lt;主仓库url&gt;
+git clone git@gitee.com:jiandan94/main-repository.git
+</code></pre>
+<p>由于在创建仓库时我选择使用README初始化仓库，因此可以在本地看到仓库中有下面的文件</p>
+<img src="http://jiandan94.gitee.io/md-figures/git/clone-main.png" width="600"/>
+<p>下面，我们将创建的sub-module仓库以Submodule身份克隆到main-repository仓库中</p>
+<pre><code class="language-R">cd main-repository  # 进入到main-repository仓库根目录
+# git submodule add &lt;子仓库的url&gt; &lt;子仓库本地路径&gt;
+git submodule add git@gitee.com:jiandan94/sub-module.git submod
+</code></pre>
+<p>我将Submodule直接放在main-repository仓库的根目录下，执行上述命令后可见目录中文件变成</p>
+<img src="http://jiandan94.gitee.io/md-figures/git/get-submodule.png" width="600"/>
+<p>多了一个<code>.gitmodules</code>文件和submod文件夹，其中sub-module仓库中的文件都存放在submod文件夹中。进入到main-repository仓库的<code>config</code>文件中，可见最后一行添加了Submodule的信息</p>
+<img src="http://jiandan94.gitee.io/md-figures/git/submodule-info.png" width="600"/>
+<p>至此，我们成功的将一个仓库以Submodule身份引入主仓库。</p>
+<p>现在我们将main-repository仓库同步到远程仓库中</p>
+<pre><code class="language-R">git add .
+git commit -m &quot;upload submodule&quot;
+git push -u origin master
+</code></pre>
+<p>这时去Gitee上查看main-repository仓库，发现多了<code>.gitmodules</code>文件和一个Submodule链接，点击链接可以跳转到我们在Gitee上创建的sub-module仓库。</p>
+<img src="http://jiandan94.gitee.io/md-figures/git/gitee-main-submodule.png" width="600"/>
+<h2 id="3-克隆带有submodule的仓库">3 克隆带有Submodule的仓库</h2>
+<p>从上面可以看出，提交一个含有Submodule的仓库，不会将本地Submodule中的文件上传到main-repository仓库中，那么问题来了：克隆一个含有Submodule的远程仓库，会把Submodule仓库中的文件克隆下来么？</p>
+<p>我们不妨将本地的main-repository仓库文件夹删除掉，然后再次执行克隆命令得到</p>
+<img src="http://jiandan94.gitee.io/md-figures/git/clone-mian-submodule.png" width="600"/>
+<p>然而，进入到submod文件夹中，发现是一个空文件夹！</p>
+<blockquote>
+<p>也就是说，直接克隆一个含有Submodule的仓库，是不会将Submodule对应的仓库中的文件克隆下来。</p>
+</blockquote>
+<p>为了将sub-module仓库中的文件也同步到本地，我们需要使用命令</p>
+<pre><code class="language-R">git submodule init
+git submodule update
+</code></pre>
+<p>此时，再进入submod文件中，就可以看到同步过来的文件了。</p>
+<h2 id="4-同步submodule">4 同步Submodule</h2>
+<p>如果远程的Submodule仓库中发生改动，比如我们在Gitee上的sub-module仓库中添加一个sub-aa.md的文件，我们只需要在本地main-repository仓库根目录用命令</p>
+<pre><code class="language-R">git submodule update --remote
+</code></pre>
+<p>相当于进入到submod文件夹中执行<code>git pull</code>，将文件拉到最新。</p>
+<p>不过，在本地的submod文件夹中做修改，直接进入到submod中进行<code>push</code>通常是不会成功的。例如我们在submod文件夹中新建一个sub-bb.md文件，然后<code>cd</code>到submod文件夹中进行同步，</p>
+<img src="http://jiandan94.gitee.io/md-figures/git/submodule-commit.png" width="600"/>
+<p>请求被拒绝了！仔细观察，不难发现，<strong>此时所在的位置不是<code>master</code>分支上！</strong></p>
+<p>原来，直接进入到submod文件夹<strong>可能</strong>不会切换到任何分支（branch）上，默认的Submodule的HEAD是出于游离状态的（detached）。因此，我们需要回到<code>master</code>分支上</p>
+<pre><code class="language-R">git checkout master
+</code></pre>
+<p>这时，我们在本地Submodule上的改动就被提交到远程sub-module仓库中了。</p>
+<h2 id="5-删除submodule">5 删除Submodule</h2>
+<p>想要删除已有的Submodule，首先删除下面的文件</p>
+<ul>
+<li>删除<code>.gitmodules</code>文件</li>
+<li>删除主仓库config中关于submodule的配置信息</li>
+<li>删除子仓库的目录</li>
+</ul>
+<p>最后，执行命令</p>
+<pre><code class="language-R"># git rm --cached &lt;本地路径&gt;
+git rm --cached submod
+</code></pre>
+<p>即可完成删除。</p>
+
+</main>
+
+  <footer>
+  
+  
+  <hr/>
+  © Kai Qi 2019 &ndash; 2023 | <a href="https://github.com/jiandan94">Github</a> | <a href="https://scholar.google.com.hk/citations?user=-9xB_VQAAAAJ&amp;hl=zh-CN">Google Scholar</a>
+  
+  </footer>
+  </body>
+</html>
+

@@ -1,0 +1,175 @@
+<!DOCTYPE html>
+<html lang="en-us">
+  <head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>主成分分析原理 | KAI&#39;s academic page</title>
+    <link rel="stylesheet" href="/css/style.css" />
+    <link rel="stylesheet" href="/css/fonts.css" />
+    
+  </head>
+
+  <body>
+    <nav>
+    <ul class="menu">
+      
+      <li><a href="/">Home</a></li>
+      
+      <li><a href="/post/selected-publications">Publications</a></li>
+      
+      <li><a href="/post/talks">Talks</a></li>
+      
+      <li><a href="/post/teaching-and-services">Teaching and Services</a></li>
+      
+      <li><a href="https://www.qikai.site/blog">Blog</a></li>
+      
+    </ul>
+    <hr/>
+    </nav>
+
+<div class="article-meta">
+<h1><span class="title">主成分分析原理</span></h1>
+
+<h2 class="date">2020/10/24</h2>
+</div>
+
+<main>
+<p>主成分分析（principle component analysis，PCA）是经典的降维分析工具之一，在数据挖掘、图像处理、信号分析等众多领域被广泛的研究和应用。PCA最早由现代统计科学的创立者、英国数学家<a href="https://baike.baidu.com/item/%E5%8D%A1%E5%B0%94%C2%B7%E7%9A%AE%E5%B0%94%E9%80%8A/5650305?fr=aladdin">Pearson</a>（1901）针对非随机变量提出，后经Hotelling（1933）推广到随机变量而逐渐完善成熟。PCA的背后有着坚实的数学理论，它将原始变量转换成若干个综合变量，在损失较少信息的前提下，抓住问题的主要矛盾、简化问题从而提升解决问题的效率。</p>
+<p>本期我们主要向大家介绍PCA的基本原理以及如何在R中实现PCA方法。</p>
+<h2 id="1-引言">1 引言</h2>
+<p>早在中学时代，我们就已经接触“数形结合”的思想。在很多实际问题中，我们思考如何处理搜集而来的数据之前，一个朴素的想法便是先通过画图观察数据中是否存在某种规律。比如，下面的图（a）就表示某二变量数据的散点图。</p>
+<img src="http://jiandan94.gitee.io/md-figures/pca/raw-data.png" width=400 />
+<p>我们之所以将数据对应成图（a）的形式，是因为基于如下的考虑。通常数据中包含很多变量，如研究健康问题中的血氧浓度、肺活量等，这些变量可以看成是对同一问题（健康）的不同角度的描述。那么，我们自然可以将问题中的各个变量与几何图形中的各个维度（如 $x_1, x_2$）进行一一对应：图形上的点在各个维度的取值等价于原始数据在相应变量上的取值。</p>
+<p>这样由原始变量对应的几何维度，我们称之为<a href="https://baike.baidu.com/item/%E5%9D%90%E6%A0%87%E7%B3%BB">坐标系</a>。一般情况下，坐标系的各个维度和数据中的<strong>原始变量</strong>一一对应，每个维度取值得到的交点和数据中的一个观测样本相对应。</p>
+<p>如果你明白了上述“数形结合”的思想，那么现在来思考这样一个问题：</p>
+<blockquote>
+<p>坐标系的维度是否非要和原始变量一一对应？</p>
+</blockquote>
+<p>也就是说，我们可不可以用其他的维度对相同的数据进行描述刻画，此时数据分析变得更加简单、规律更容易被发现？事实上， 以图（a）为例，我们确实可以找到一个新的坐标系来描述相同的数据，如下所示</p>
+<img src="http://jiandan94.gitee.io/md-figures/pca/rotation-axis.png" width=400 />
+<p>我们按照原始变量建立坐标系之后，可以将坐标系的零点 $O$ 移动到图（b）中的 $O'$ 处，并以 $p_1,p_2$ 为新的维度来描述数据。在新的坐标系下，数据主要在 $p_1$ 方向分布，而 $p_2$ 方向则变动不大。换句话说，我们完全可以只用 $p_1$ 来描述数据。这样，原来要用两个变量（维度）刻画的数据，在新坐标系下只需一个<strong>新变量</strong>（维度）刻画即可，也即实现的降维的目的。</p>
+<p>进一步观察可以发现：如果事先将原始数据对各个变量进行<strong>中心化</strong>（每个变量的数据减去其平均值），新坐标和原始坐标的零点就重合了且可以看成原始坐标的一个旋转，如图（c）所示。</p>
+<img src="http://jiandan94.gitee.io/md-figures/pca/rotation-center-axis.png" width=400 />
+<p>此外，我们也注意到当前新坐标的方向 $p_1,p_2$ 可以写成原始坐标 $x_1,x_2$ 的<strong>一个线性组合</strong>。这一点对寻找新坐标很有启发意义。</p>
+<p>总之，上述思考表明<strong>确实可以通过原始变量建立新变量来描述同一数据，且可能降低分析问题的难度</strong>。这些对于问题朴素的思考就蕴含了主成分分析（principle component analysis）的基本思想。</p>
+<h2 id="2-主成分分析pca">2 主成分分析（PCA）</h2>
+<p>假设研究数据中的变量分别为 $x_1,\ldots,x_p$，由于原始变量繁杂不易于直接分析，主成分分析便希望通过构建原始变量的一系列线性组合找到若干<strong>主成分变量</strong>进行分析，在简化问题的同时又保留了原始数据的绝大多数信息。</p>
+<p>结合第一节的思考，对于PCA的第一个要求，我想大家应该豁然开朗了：<strong>PCA要寻找的主成分变量其实就是坐标变换后的新坐标</strong>。因为将原始数据中心化后，新坐标系中的各个方向（新变量）就是原始方向（变量）的线性组合。所以，<strong>PCA思想的背后其实就是线性代数中的坐标变换</strong>。这也表明PCA背后有坚实的数学理论基础。</p>
+<p>找到构建新变量的思路后，还要思考一个问题——变换到具体哪个坐标才是我们想要的？这要利用PCA的第二个要求：保留原始数据绝大多数信息。</p>
+<p>PCA对于数据信息的描述是基于方差的。方差反映数据的波动范围：方差越大波动越大，方差越小波动越小。波动大，表示该方向上数据有很大的变化，也即是参考这个方向以后对各个数据会有更多的认识。波动小，表示该方向上数据没有显著的改变，也即是参考这个方向以后对各个数据不会有更多的认识。所以，方差大的方向信息丰富，反之则信息较少。</p>
+<blockquote>
+<p>以图（c）为例，数据在 $p_1$ 方向的分布范围很大，可以刻画原始数据丰富的细节；而在 $p_2$ 方向分布范围较小，可以忽略。而数据在 $x_1$ 和 $x_2$ 方向的分布范围都很大，因此我们无法忽略哪个。</p>
+</blockquote>
+<p>下面，我们以第一主成分为例，介绍求解主成分的基本思路。</p>
+<p>给定原始变量 $x_1,\ldots,x_p$，我们用他们的一个线性组合表示第一主成分
+$$
+y_1 = \alpha_{11} x_1 + \ldots + \alpha_{1p} x_p
+$$
+根据方差最大原理，上述的系数要满足
+$$
+\max Var(y_1)
+$$
+由于对系数没有要求，单纯最大化的得不到最终的解。因此，我们对系数添加一个正则化的约束
+$$
+\max Var(y_1) \quad s.t.\quad \Vert \alpha_1\Vert=1
+$$
+其中 $\alpha_1 = (\alpha_{11},\ldots,\alpha_{1p})^T$，$\Vert \cdot\Vert$ 表示欧式范数。进一步假设我们针对 原始变量 $x_1,\ldots,x_p$ 观测到的数据矩阵（已列中心化）为 $X\in \mathbb{R}^{n\times p}$，则上述的优化问题变成
+$$
+\max \alpha_1^T(X^TX)\alpha_1 \quad s.t.\quad \Vert \alpha_1\Vert=1
+$$
+它的最优解为Gram矩阵 $X^TX$ 的最大特征值，$\alpha_1$ 为最大特征值对应的特征向量。</p>
+<p>如果已经求解出前 $q-1$ 个主成分，对于第 $q$ 个主成分 $y_q$ 有
+$$
+y_q = \alpha_{q1} x_1 + \ldots + \alpha_{qp} x_p
+$$
+满足
+$$
+\max \alpha_q^T(X^TX)\alpha_q \quad \
+s.t.\quad \Vert \alpha_q\Vert=1, \alpha_q^T\alpha_1=0,\ldots, \alpha_q^T\alpha_{q-1}=0
+$$
+这等价于求一个 $p\times q$ 的列正交矩阵使 $X^TX$ 正交化的问题。当然，PCA还可以通过<a href="https://baike.baidu.com/item/%E5%A5%87%E5%BC%82%E5%80%BC%E5%88%86%E8%A7%A3">矩阵的SVD</a>进行求解。具体的思路不再赘述，有兴趣的读者可以参考其他资料。</p>
+<p>从上述的分析中可以看出，PCA的背后是坐标变换，求解的过程利用到了依次方差最大的原则。当我们求解的各个主成分的<strong>方差累计贡献率</strong>（所求主成分的方差和占总方差的比例）达到一定比例时（一般在70%以上），就可以停止继续求解主成分了。我们对数据的分析就可以基于所求主成分展开。</p>
+<h2 id="3-若干说明">3 若干说明</h2>
+<h3 id="31-pca可行性检验">3.1 PCA可行性检验</h3>
+<p>PCA是数据降维的一个有效手段，可以透过繁杂的原始变量直击问题的主要矛盾，但并不意味着我们可以滥用PCA。从前面的分析可以看出，<strong>数据在各个方向上的分布有明星偏倚，才可以考虑采用PCA处理</strong>。假如数据的分布没有明显的偏倚，如空间中以球形分布，如图（d）所示，就不适用PCA进行处理了。</p>
+<img src="http://jiandan94.gitee.io/md-figures/pca/ball-data.png" width=400 />
+<p>因此，我们在使用PCA之前要对数据进行检测，通常是 <a href="https://baike.baidu.com/item/Bartlett%27s%E7%90%83%E7%8A%B6%E6%A3%80%E9%AA%8C/5678784?fr=aladdin">KMO和Bartlett球形检验</a>。</p>
+<h3 id="32-主成分的含义">3.2 主成分的含义</h3>
+<p>通过前面的讨论不难发现，主成分找到后虽然可以解释原始数据的绝大部分信息，但是它是原始变量的线性组合，其自身的含义难以理解。例如，假设图（c）中 $x_1$ 表示血氧浓度，$x_2$ 表示肺活量，$p_1 = 2x_1 + x_2$ 是第一主成分，它包含了原始数据的大部分信息。然而，原始问题的变量 $x_1,x_2$ 含义很清晰，$p_1$ 就很难基于实际问题理解其含义了。因此，PCA得到的主成分的含义解释，往往在问题分析中颇费精力。</p>
+<p>之所以难以理解主成分的含义，是因为主成分和所有的变量都有关。因此，一个提升含义的直接办法就是构建稀疏主成分，也即是主成分和较少的变量有关而在其余变量上稀疏为零或接近零。经典的办法是进行主成分的旋转。不过，旋转主成分丧失了依次方差最大的原则。关于这方面的内容，可以参考相关文献。</p>
+<h2 id="4-r实现pca">4 R实现PCA</h2>
+<p>在R中有专门的程序包实现PCA方法。首先我们安装并载入所需的程序包</p>
+<pre><code class="language-R">install.packages(&quot;psych&quot;)
+library(psych)
+</code></pre>
+<p>数据选取的是某地区高校大学生职业生涯规划现状的问卷，包含10 个变量，其含义如下表所示：</p>
+<img src="http://jiandan94.gitee.io/md-figures/pca/mydata.png" width=500 />
+<p>在做PCA之前，对数据进行KMO和Bartlett球形检验：</p>
+<pre><code class="language-R">&gt; KMO(as.matrix(mydata))
+Kaiser-Meyer-Olkin factor adequacy
+Call: KMO(r = as.matrix(mydata))
+Overall MSA =  0.88
+MSA for each item = 
+  x1   x2   x3   x4   x5   x6   x7   x8   x9  x10 
+0.58 0.51 0.65 0.63 0.58 0.91 0.93 0.91 0.91 0.95 
+&gt; cortest.bartlett(cor(mydata), n = nrow(mydata))
+$chisq
+[1] 7929.074
+
+$p.value
+[1] 0
+
+$df
+[1] 45
+</code></pre>
+<p>可见KMO系数 $&gt;0.5$ 且Bartlett检验的P值 $&lt;0.05$，说明数据很适合进行主成分分析。</p>
+<p>程序包<code>psych</code>中进行PCA的函数是<code>principal</code>，它的基本使用方式为</p>
+<pre><code class="language-R">principal(data, nfactors = 1, rotate = &quot;varimax&quot;, scores = T)
+</code></pre>
+<p>其中<code>data</code>是我们要分析的数据的相关系数矩阵，直接输入原始数据亦可。<code>nfactors</code>是保留的主成分个数，需要被实现给定。<code>rotate</code>表示在求解过程中采用哪种旋转方式，默认<code>varimax</code>方式。<code>varimax</code>是一种试图对载荷阵的列进行去噪，使得每个主成分和有限的变量有关，从而提升主成分的可解释性。<code>scores</code>表示是否输出主成分得分矩阵，默认输出。</p>
+<pre><code class="language-R">fa.parallel(cor(mydata), n.obs = nrow(mydata), fa = &quot;both&quot;, n.iter = 100)
+</code></pre>
+<p>由于<code>principal</code>函数要实现给定主成分的个数，我们先用<code>psych</code>中的<code>fa.parallel</code>进行主成分个数的选取：</p>
+<img src="http://jiandan94.gitee.io/md-figures/pca/scree-plot.png" width=500 />
+<p>一般我们选择特征值大于1的主成分即可，如上面的碎石图所示，我们选择3个主成分进行后续分析。先看不使用旋转（<code>rotate = &quot;none&quot;</code>）的结果：</p>
+<pre><code class="language-R">&gt; principal(mydata, nfactors = 3, rotate = &quot;none&quot;, scores = T)
+Principal Components Analysis
+Call: principal(r = mydata, nfactors = 3, rotate = &quot;none&quot;, scores = T)
+Standardized loadings (pattern matrix) based upon correlation matrix
+      PC1   PC2   PC3   h2    u2 com
+x1   0.32  0.05 -0.85 0.83 0.172 1.3
+x2   0.03  0.70  0.21 0.53 0.473 1.2
+x3   0.05  0.70  0.14 0.52 0.482 1.1
+x4   0.13  0.58  0.29 0.43 0.567 1.6
+x5  -0.30 -0.50  0.68 0.81 0.192 2.3
+x6   0.98 -0.04  0.09 0.97 0.033 1.0
+x7   0.97 -0.03  0.09 0.96 0.044 1.0
+x8   0.98 -0.05  0.09 0.96 0.037 1.0
+x9   0.98 -0.05  0.08 0.96 0.038 1.0
+x10  0.94 -0.14  0.08 0.90 0.100 1.1
+
+                       PC1  PC2  PC3
+SS loadings           4.89 1.60 1.37
+Proportion Var        0.49 0.16 0.14
+Cumulative Var        0.49 0.65 0.79
+Proportion Explained  0.62 0.20 0.17
+Cumulative Proportion 0.62 0.83 1.00
+</code></pre>
+<p>上述第一部分的结果描述的提取的主成分变量PC1、PC2和PC3与原始变量的线性关系；第二部分则是每个主成分的方差贡献率和累计方差贡献率，可见3个主成分的累计方差贡献率为1，完全可以解释原始数据的信息。</p>
+<p>进一步我们发现，第一主成分主要和 $x_6\sim x_{10}$ 有关，即院校在大学生职业规划中的参与情况；第二主成分主要和 $x_2\sim x_4$ 有关，即职业规划的实践形式；第三主成分主要和 $x_1,x_5$ 有关，即职业规划的授课辅导（和专题讲座呈负相关，看来大家比较反感在就业辅导时进行上课学习，这似乎比较符合现状）。</p>
+<p>上述的案例在不进行主成分旋转时也能有一个合理的解释，这并不适用于一般的数据。感兴趣的读者可以自行搜集数据进行分析比较，看看两者之间的差异。</p>
+<h2 id="5-结语">5 结语</h2>
+<p>本期我们的主要学习了PCA的基本原理和R实现的方式。最后还要提醒大家，PCA虽然应用广泛，但不能滥用，要针对不同数据自身的特点选择合适的模型。</p>
+
+</main>
+
+  <footer>
+  
+  
+  <hr/>
+  © Kai Qi 2019 &ndash; 2023 | <a href="https://github.com/jiandan94">Github</a> | <a href="https://scholar.google.com.hk/citations?user=-9xB_VQAAAAJ&amp;hl=zh-CN">Google Scholar</a>
+  
+  </footer>
+  </body>
+</html>
+

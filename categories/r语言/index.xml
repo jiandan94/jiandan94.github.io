@@ -1,0 +1,201 @@
+<?xml version="1.0" encoding="utf-8" standalone="yes"?>
+<rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
+  <channel>
+    <title>R语言 on KAI&#39;s academic page</title>
+    <link>https://jiandan94.github.io/categories/r%E8%AF%AD%E8%A8%80/</link>
+    <description>Recent content in R语言 on KAI&#39;s academic page</description>
+    <generator>Hugo -- gohugo.io</generator>
+    <language>en-us</language>
+    <lastBuildDate>Sat, 01 May 2021 00:00:00 +0000</lastBuildDate><atom:link href="https://jiandan94.github.io/categories/r%E8%AF%AD%E8%A8%80/index.xml" rel="self" type="application/rss+xml" />
+    <item>
+      <title>R包制作简易教程2</title>
+      <link>https://jiandan94.github.io/note/rpackagemake2/</link>
+      <pubDate>Sat, 01 May 2021 00:00:00 +0000</pubDate>
+      
+      <guid>https://jiandan94.github.io/note/rpackagemake2/</guid>
+      <description>在往期的博客中，我和大家分享了仅含有R代码的R包制作的简易教程。实际中，我们的函数文件可能既包含R代码又包含C++代码，那么此时的R包制作会有哪些异同呢？本期我们一起来学习含有C++代码的R包制作流程。
+1 准备工作 我们仍然默认大家已经安装了R和RStudio，配置R包开发的基础环境可以参考我往期的博客——R包制作简易教程1。此外，我们还要准备好两件事。一是安装Rcpp程序包，它是R中辅助开发C++程序的重要R包，关于Rcpp程序包的介绍可参考我往期的博客——效率瓶颈突破：Rcpp简介。二是安装Rtools套件，这是CRAN镜像网络为Windows系统下R开发C++代码提供的环境支持。Rtools套件需要单独下载进行安装，其官方下载地址为
+https://cran.r-project.org/bin/windows/Rtools/ 根据自己的情况选择合适的版本即可。安装完毕后，需要将下面几个目录加入到系统的环境变量中，否则R检测不到相关程序就无法完成C++代码的编译：
+# 假设Rtools的安装目录为D:\rtools40# 需要放进环境变量的目录分别是D:\rtools40D:\rtools40\usr\binD:\rtools40\mingw32\binD:\rtools40\mingw64\bin 关于Windows下更改环境变量的方法，可以参考如下的百度经验帖：
+https://jingyan.baidu.com/article/9113f81b5c2b322b3214c7a0.html 准备工作完毕，我们介绍本次制作含有C++代码的R包所用到的函数代码：
+1. awensvm.R2. clipDCDMain.cpp3. gaussian_kernel.R 其中代码1是主程序，用来实现我一篇论文中的AWENSVM模型；代码2是求解模型的核心算法程序，是一个C++代码；代码3则是用来求解非线性AWENSVM时要用到。此外，函数awensvm和函数gaussian_kernel要在载入程序包后可以用户查询和使用，而函数clipDCDMain则可以隐藏。
+ 由于篇幅限制，我们不介绍R中C++函数的构建和编译过程而是假定C++代码已经调试成功并可以在R中调用执行。
+ 下面，我们正式介绍含有C++代码的R包制作方式。
+2 RStudio可视化制作 首先我们还是来看RStudio中的可视化操作方式。与R代码的R包制作方式类似，我们通过RStudio菜单栏依次选择File &amp;gt; New Project创建一个项目，然后选择New Directory &amp;gt; R package，得到R包制作的初始界面：
+与R代码程序包不同的是，这里我们选择Package w/cpp，然后填上R包的名称，并通过Add按钮添加所需的函数代码。最后，我们把生成的R包文件夹的路径填成桌面，点击Create Project即可在桌面创建名为AWENSVMcpp的文件夹。
+与仅含R代码生成的目录不同之处在于，这里多了一个src文件夹，而src文件夹正是存放我们C++代码的文件夹。其他文件夹和文档的含义请读者阅读往期文章——R包制作简易教程1。下面，我们重点介绍修改文件和仅含R代码时的不同之处。
+DESCRIPTION文档的修改。这里要注意多出的Imports和LinkingTo两个参数。由于R中C++代码的正常运行是基于Rcpp包的，所以我们要在Imports参数后添加Rcpp，后面括号的数字表示支持本R包所需Rcpp的最低版本——如果考虑到R包的适用性，可以适当降低版本号。此外，我这里的C++代码用到了RcppEigen包。因此，我们需要在LinkingTo参数后额外加上RcppEigen，表示链接到该包。
+Package: AWENSVMcppType: PackageTitle: What the Package Does (Title Case)Version: 0.1.0Author: Who wrote itMaintainer: The package maintainer &amp;lt;yourself@somewhere.net&amp;gt;Description: More about what it does (maybe more than one line)Use four spaces when indenting paragraphs within the Description.</description>
+    </item>
+    
+    <item>
+      <title>R包制作简易教程1</title>
+      <link>https://jiandan94.github.io/note/rpackagemake1/</link>
+      <pubDate>Sun, 25 Apr 2021 00:00:00 +0000</pubDate>
+      
+      <guid>https://jiandan94.github.io/note/rpackagemake1/</guid>
+      <description>在使用R时，最常见的操作就是通过 install.packages() 安装某个R包以及 library()载入并使用该R包。这些R包的开发者很多来自于活跃在统计、数据分析、机器学习等领域的学者和教授。有时，某个新模型被提出后，作者就已经开发出相应的R包供他人使用。因此，R包的持续更新和开发使得R用户可以站在众多领域的最前沿。
+ 诚然，正是得益于大家的分享，才铸就了R的强大。
+ 普通人虽然难以开发出专业的R包分享给他人使用，但是掌握R包开发的基本方法仍然是有益的——可以把自己的代码集中管理，以便调用。本文便是R包制作的一个简易教程。
+1 准备工作 在R包开始制作前，我们要为其配置相关的环境。首先，我已经默认大家已经安装了R和RStudio两个软件。R包的开发需要用到一系列程序包，可以用下面的命令安装
+install.packages(c(&amp;quot;devtools&amp;quot;, &amp;quot;roxygen2&amp;quot;, &amp;quot;testthat&amp;quot;, &amp;quot;knitr&amp;quot;))# devtools 可以自动化一些开发工作，减少R包开发的痛苦# roxygen2 将R包的帮助文档写作变得便捷# testthat 用来构建测试# knitr 则是一个动态文档成工具 我们可以使用下面的命令检测是否所有的工具都已安装：
+library(devtools)# 载入需要的程辑包：usethishas_devel()# Your system is ready to build packages! 环境配置好后，接着我们介绍本文制作R包所用到的3个R函数代码：
+1. awensvm.R2. clipDCD_Main.R3. gaussian_kernel.R 其中代码1是主功能函数，用来实现我在2019年提出的AWENSVM模型；代码2是用来求解该模型的核心程序；代码3则用来计算高斯核内积，在构建非线性AWENSVM时要用到。需要说明的是，函数awensvm和函数gaussian_kernel在载入包后要能被用户调用，而clipDCD_Main则可以隐藏。
+一切就绪后，下面我们正式进入R包制作环节。
+2 RStudio可视化制作 2.1 建立R包项目 基于RStudio，我们可以可视化的构建R包。首先，通过RStudio菜单栏的File &amp;gt; New Project创建一个项目：
+在出现的上述界面中选择New Directory &amp;gt; R package，得到R包创建初始化界面：
+在Package name下填上自己R包的名称，这里是AWENSVM；通过Add按钮添加R包所需的R函数代码，这里依次添加了上述的三个函数的R代码；接着选择将该项目（构建R包）放在哪个目录下，这里是电脑桌面；最后点击Create Project即可建立本次R包开发的项目。
+2.2 更改包文件信息 点击Create Project之后，在桌面上就出现一个名为AWENSVM的文件夹，里面包含了下述文件/目录：</description>
+    </item>
+    
+    <item>
+      <title>效率瓶颈突破：Rcpp简介</title>
+      <link>https://jiandan94.github.io/note/rcpp-synopsis/</link>
+      <pubDate>Fri, 23 Apr 2021 00:00:00 +0000</pubDate>
+      
+      <guid>https://jiandan94.github.io/note/rcpp-synopsis/</guid>
+      <description>在数据分析时，代码的运行速率常常是我们所关心的话题之一。小Q往期的文章中也有介绍通过并行计算提升R运行速率的文章。然而R代码自身的运行速率偏慢，具有某种“先天缺陷”。因此，并行R函数的运行时间有时仍然不尽人意。本期小Q与大家分享R的另一提速方式：Rcpp之效率瓶颈突破。
+1 什么是Rcpp 在往期的文章中曾讲过，我们在R中尽量采用向量化或内建函数运算，避免自编循环带来的额外时间消耗。然而，算法中有时难以避免循环，若循环部分耗时严重，直接并行含有该循环的算法显得力不从心，此时又该如何？稍有编程知识的读者可能会想到，较低级的语言在执行循环时更高效。因此，将算法中耗时严重的循环用较低级的语言重新编写是提速的可行思路。、
+ Rcpp程序包便是构建R与C++之间的重要桥梁。有了Rcpp程序包的支持，我们可以很容易地将C++程序接入到R中，也可以在C++中使用R的数据类型甚至函数。
+ 其实将R和C++整合的想法由来已久，早在2001年Bates和DebRoy就已尝试过这种思路。Rcpp程序包最早在2005年出现，当时是作为RQuantLib的扩展包。在2006年时，Rcpp有了自己的名字并成为一个CRAN扩展包。不过，很长一段时间内，Rcpp程序包没有较大的更新发展。从2008年开始，Eddelbuettel对其进行重新开发后，Rcpp的更新和扩展有了积极的支持。
+2 Rcpp基本使用 2.1 安装Rcpp 我们在R中直接执行install.packages(&amp;quot;Rcpp&amp;quot;)就可以安装Rcpp程序包。不过，仅仅安装程序包并不能直接在R中调用C++程序，因为我们需要为之搭建C++编译的环境。在Windows系统中，C++程序的编译由Rtools工具包支持。我们可在CRAN上下载并安装Rtools工具包，下载链接为
+https://cran.r-project.org/bin/windows/Rtools/ 安装尽量选择默认配置，注意要将Rtools的目录放到环境变量中。此外，我们还要注意R自身的安装路径中不能含有空格，否则编译C++程序时会报错。一般注意以上两点，我们的准备工作就可以顺利完成。
+2.2 用cppFunction转换C++函数 函数cppFunction()可以用来在R中调用C++函数。例如，考虑Fibonacci数列的计算问题 $$ f_0 =0,f_1=1,f_n = f_{n-1} + f_{n-2}. $$ 那么，我们可以采用下面R和C++交互的形式来计算给定 $n$ 的Fibonacci数：
+library(Rcpp)cppFunction(code = &amp;quot;int fibonacci(const int n){if(n &amp;lt; 2){return n;}else{return(fibonacci(n-1) + fibonacci(n-2));}}&amp;quot;) 其中code部分就是一段C++代码。运行上面的命令后，就可以在R中调用函数fibonacci()，例如
+fibonacci(0)# [1] 0fibonacci(1)# [1] 1fibonacci(10)# [1] 55 2.3 用sourceCpp转换C++函数 当C++程序代码较多时，直接用cppFunction()来调用不太合适，将其单独保存成.cpp文件并使用sourceCpp()加载调用更为灵活方便。我们在RStudio中选择新建C++ File就可以在工作目录建立一个.cpp文档，RStudio默认会给出一个C++的示例，如下所示：
+#include &amp;lt;Rcpp.</description>
+    </item>
+    
+    <item>
+      <title>解密文章作者之谜</title>
+      <link>https://jiandan94.github.io/note/author-detection/</link>
+      <pubDate>Wed, 12 Aug 2020 00:00:00 +0000</pubDate>
+      
+      <guid>https://jiandan94.github.io/note/author-detection/</guid>
+      <description>文本分析是指对文本的表示及其特征项的选取；文本分析是文本挖掘、信息检索的一个基本问题，它把从文本中抽取出的特征词进行量化来表示文本信息。	——百度百科
+ 自然语言处理领域近些年来的研究非常火热，文本分析作为其分支之一也颇受关注。我之前分享过如何利用R绘制词云，也算和文本分析沾了边。
+在绘制词云的过程中，我们主要将大篇幅的文字内容进行“分词”，然后统计各个词组的词频，最后根据词频进行绘图。虽然这个过程听起来很简单，但通过垃圾短信案例我们还是可以得到很有意义的信息。不过，仅仅靠观察词云是非常粗糙的，这无法更加量化的分析文本的特征。
+本期我们一起来解密文章作者之谜，通过一些简单但比词云更加细化的统计思路和方法来分析文本，让大家稍稍感受分析文本的乐趣。
+1 背景介绍 一名文学研究员带着一份文稿匆匆找到正在学习统计理论的你寻求帮助。他说：“我手上这份文稿共有四篇散文，目前可以根据文稿来源断定是一人所作，但是具体作者是谁尚不肯定。经过各方专家分析写作手法，初步断定可能是鲁迅、朱自清或徐志摩所作。如今大数据这么火，请你帮我判断一下文章作者。”
+2 初步探索 读者此时可能正在努力回忆自己中学时代学过的有关文章，暗自揣摩它们之间的异同。诚然，想要判断文章作者，我们必须要了解每个作者的写作特点。因此，我们不妨在网上搜集到鲁迅、朱自清和徐志摩三人的散文文集。接着可以按照前文的方式分别做出它们的词云图案，观察之间的异同点。这里，笔者用R绘制出了他们三人各自散文的词云
+从上图看，三名作家的高频词汇竟然大同小异！回忆上一节的案例，读者不难想到其中原因。一方面，文章写作中很多字是常用字，大家出现的频率都高很正常。事实上，早期人们在破解密码时就利用写作中字（字母）出现的频率不同找到突破口。另一方面，一个朝代的文学尚且有一种主流，何况一个时代呢？三名作家生活年代相近，且正好处于新、旧文化更替时期，文章用字（词）大趋势类似也无可厚非。那么，我们的解谜难道就此止步么？
+3 细致分析 大趋势类似，之于个人风格的细节肯定互有不同。如果比较每个人风格的细节，应该就能得到蛛丝马迹。为了验证这样的想法，我们利用R软件对三名作家散文中的词频进行更为细致的比较，得到结果如图所示
+从图示结果来看，我们的猜测是正确的。图中每个点的横、纵坐标表示相应作者散文集中某词汇出现的频率，频率一致的点即构成灰色的虚线。显然，实际词汇的分布和虚线有一定的位移，说明鲁迅和另外两名作家的风格不同（类似的，可以对另外两名作家分析，不赘述）。比起徐志摩和朱自清，鲁迅似乎更喜欢在散文中提到动物，如猫、鼠、象和老虎等。
+继续观察图像，可看到鲁迅散文中的词频没有徐、朱二人散文中的词频更接近低频区，说明后两者在作文时采用的词汇更加丰富。这似乎符合我们对三人的印象——徐、朱的文章多具美感，故而可能使用更加丰富的辞藻；鲁迅的文章则冷静犀利，词汇的变化可能不太大。
+找到突破口后，我们还要确定一件事情：
+ 假设没有重大的变故，一名作家的的文风数年之后会发生很大改变么？
+ 如果是，那么这无疑增加了我们分析的难度。现在，我们以鲁迅的散文集为例，将其按时间顺序差不多等分成三部分，对比这三部分各自词汇频率的相似程度，结果如下图所示
+从图中可以看出，第2、3部分的词汇频率和第1部分词汇的频率基本对称分布在虚线两侧。这说明，鲁迅前后的文风没有发生很大的改变！同理，我们可以对其他两位作者的散文集做相同的分析，可以发现结果类似。那么，我们现在就可以利用词汇的频率进行相似度检验了。
+在R中，检测两个数值量之间的相似度可以用cor.test()命令，它基于的是皮尔逊相关性检验。我们使用下述命令
+# 相关性检测cor.test(data = frequency[frequency$author == &amp;quot;zhuziqing&amp;quot;,],~proportion + test)cor.test(data = frequency[frequency$author == &amp;quot;luxun&amp;quot;,],~proportion + test)cor.test(data = frequency[frequency$author == &amp;quot;xuzhimo&amp;quot;,],~proportion + test) 分别得到待测文本和鲁迅散文集、朱自清散文集与徐志摩散文集的相似度系数为0.90917、0.9461695以及0.905819。至此，我们可以对研究员说“您这份文稿和三名作家的风格都极为接近，但经过我的分析，它出于朱自清先生手笔的可能性更大！”
+事实上，研究员的故事是笔者杜撰的，文稿也是笔者事先从朱自清散文集中随机抽取的四篇文章。笔者希望通过这个小小的案例让读者感受到探究文本分析背后奥秘的乐趣，以及R在数据分析中的强大之处。
+4 结语 上述案例的灵感来源本科大一的新生研讨课。那时刚刚步入大学接触统计学，主讲老师（也是我现在的博导）通过各种精彩的案例让我们感受到了统计学的美妙。期间，老师给我们讲到学者如何利用统计知识分析《红楼梦》前80回和后40回的差别，又在课程结束让我们探究老子的《道德经》是否为一人所作。因此，我在研究生多元课上接触到文本分析时，首先就想到该经历——也就杜撰了这个案例。
+参考文献 韦博成.《红楼梦》前80回与后40回某些文风差异的统计分析(两个独立二项总体等价性检验的一个应用)[J].应用概率统计,2009,25(04):441-448.</description>
+    </item>
+    
+    <item>
+      <title>R绘制热力图</title>
+      <link>https://jiandan94.github.io/note/r-heatmap/</link>
+      <pubDate>Mon, 27 Jul 2020 00:00:00 +0000</pubDate>
+      
+      <guid>https://jiandan94.github.io/note/r-heatmap/</guid>
+      <description>热力图最初来源于网络，是以特殊高亮的形式显示访客热衷的页面区域和访客所在的地理区域的图示。在如今的大数据时代，热力图可是直接推动大数据发展的技术。
+ 本期我们将用R来实现绘制区域热力图。在实现过程中需要用到下面几个程序包，大家可以提前下载安装好。
+install.packages(mapdata)install.packages(maptools)install.packages(ggplot2)install.packages(plyr)install.packages(rgdal)install.packages(mapproj) 1 mapdata绘制热力图 热力图的绘制自然离不开地图数据，maps是R中一个基本地图数据包，但是其中不包含中国的数据，因此我们需要额外下载mapdata数据包。
+mapdata数据包搜集了中国地区的地图数据，以及中国各省边界线的数据。使用下面的命令绘制出中国省级地图：
+china_map &amp;lt;- rgdal::readOGR(&amp;quot;geo_data//bou2_4p.shp&amp;quot;)plot(china_map) 得到的地图较为扁平（左图），我们使用下面的命令进行调整使其显示正常（右图）。
+# 图像过于扁平，需要进行调整ggplot(china_map, aes(x = long, y = lat,group = group)) +geom_polygon(fill = &amp;quot;white&amp;quot;, colour = &amp;quot;black&amp;quot;) +coord_map(&amp;quot;polyconic&amp;quot;) +theme(panel.grid = element_blank(),panel.background = element_blank(),axis.text = element_blank(),axis.ticks =element_blank(),axis.title = element_blank(),legend.position = c(0.2, 0.3)) 接下来我们可以使用在股票市场搜集的全国各省2018年9月4号的换手率（HS）和量比（LB）数据来绘制热力图，参考代码如下
+x &amp;lt;- china_map@dataxs &amp;lt;- data.frame(x, id = seq(0:924) -1)# 地图中共计有925个地域信息china_map1 &amp;lt;- fortify(china_map)china_map_data &amp;lt;- join(china_map1, xs,type = &amp;quot;full&amp;quot;)# 基于id进行连接# unique(china_map@data$NAME)# 查看地图数据中保存的地域名称，编辑自己的数据与其一致mydata &amp;lt;-read.</description>
+    </item>
+    
+    <item>
+      <title>RStudio-Server与远程交互</title>
+      <link>https://jiandan94.github.io/note/rstudio-server/</link>
+      <pubDate>Sun, 05 Jul 2020 00:00:00 +0000</pubDate>
+      
+      <guid>https://jiandan94.github.io/note/rstudio-server/</guid>
+      <description>0 写在前面 作为经常用R跑程序、处理数据的你是否有过这样的苦恼：台式机性能强大但携带不便，笔记本携带自如但性能薄弱，每次只能在两台电脑间来回操作、疲惫不已却无能为力。
+那这样的场景多半会吸引到你：在有网络的地方，通过笔记本可以轻松的访问远程的R客户端，利用远程电脑运行程序；若程序比较耗时，你尽可以将R界面关闭去用笔记本处理其他事务，只用再次连接远程电脑就可以查看程序的运行情况&amp;hellip;..
+现在有很多云服务器可以实现上述的工作情景，不过可能价格不菲。但如果你手上恰有一台台式机+笔记本，以上情景可以通过RStudio-Server实现。本文就跟大家分享一下RStudio-Server环境的搭建经验。
+1 准备工作 1.1 Ubuntu系统 一般来说，Linux系统在处理程序时相较于Windows系统更高效，服务器端环境的搭建常常是在Linux上展开的。因此，我们首先要在台式机上安装Linux系统。目前比较流行的Linux系统版本有很多，例如受美国打压后国内热度迅速上升的deepin，我在好友H君的建议选择了Ubuntu 18.04，因为Ubuntu发展至今系统较为稳定，社区也很成熟，很多坑和雷都可以在网上找到解决方案。
+ 事实上，作为一个爱国青年我最开始也尝试了deepin，桌面颜值很高但系统还不是很流畅。致命的问题是在安装RStudio-Server时，总报错OpenSSL版本不对，试了网上几乎所有的方法皆以失败告终。无奈，放弃。
+ Ubuntu系统的安装也很简单。首先，我们在Ubuntu官网下载对应的版本镜像iso文件；官网的下载速度可能比较慢，我们可以选在国内的镜像源进行下载，以下是我搜集的一些常见下载镜像源，进入后选择对应的版本即可。
+# 中国官网（推荐）https://cn.ubuntu.com/# 中科大源http://mirrors.ustc.edu.cn/ubuntu-releases# 阿里云开源镜像站http://mirrors.aliyun.com/ubuntu-releases# 兰州大学开源镜像站http://mirror.lzu.edu.cn/ubuntu-releases# 北京理工大学开源http://mirror.bit.edu.cn/ubuntu-releases# 浙江大学http://mirrors.zju.edu.cn/ubuntu-releases 其次，我们在网上下载软碟通UltraISO软件，利用该软件进行装机启动U盘的制作。具体的制作过程可以问度娘，步骤很简单。
+最后，我们利用制作好的装机U盘进行系统安装。这个过程网上很多教程可参考，不过还是可能遇到一些不可控的问题。例如，我在安装的过程中就报错。好在网上有对应解决的策略，这也说明选择一个成熟的系统就是为自己省心。
+ 安装系统只用记住一件事，设置好系统的用户名和密码并牢记！
+ 1.2 安装R和RStudio-Server 系统安装好之后，连上网，然后就可以着手安装R和RStudio-Server两个客户端——工欲善其事必先利其器嘛。
+首先按住Ctrl+Alt+T快捷键呼出终端——这相当于系统的一个控制台，功能相当强大。用户可以通过终端输入命令进行各种操作，如网页访问、文件下载、文件解压、程序安装、各种环境部署等。
+)
+虽然Ubuntu提供了很多可视化的工具，但是作为一个有理想的小白，我还是觉得适应Linux就要从适应命令行开始！输入下面的命令安装r环境
+# 更新软件源apt-get update # 安装rapt-get install r-base r-base-dev 安装完毕后，在终端输入R返回下面的结果就说明安装成功。
+)
+上面的返回结果其实就是R的操作环境 (和我们在Windows上的图形界面看到的结果一样)，我们可以接着输入R程序运行即可。例如，我输入了下面的命令进行画图，就会返回相应的图像。
+)
+接着，我们继续在终端中依次输入下面的命令进行RStudio-Sever安装。与桌面版的RStudio不同，服务器版提供了远程网页的访问功能，使用起来更加方便。
+# 安装必备文件sudo apt-get install gdebi-core# 下载1.0.136版的rstudio-server安装文件，最新版自行去官网查看wget https://download2.</description>
+    </item>
+    
+    <item>
+      <title>股票数据的合并</title>
+      <link>https://jiandan94.github.io/note/stockbind/</link>
+      <pubDate>Fri, 27 Mar 2020 00:00:00 +0000</pubDate>
+      
+      <guid>https://jiandan94.github.io/note/stockbind/</guid>
+      <description>1 背景介绍 最近，有朋友跟我说起股票数据处理的问题。由于课程要求，学生需在软件中下载股票指数数据 和对应的成分股收盘价数据，然后对指数和收盘价做一个分析，比如回归分析。
+金融软件导出的数据是指数+所有的成分股的CSV文件，每个CSV文件格式相同，包含时间、开盘价、收盘价、成交量等。那么，问题来了——怎么把这些文件整合到一起去呢？
+准确来说，这个问题要考虑以下这些点：
+ 指数和所有成分股要按时间一一对应，每一行代表一个时间点的指数和成分股收盘价数据； 成分股遇到停盘数据便会有缺失，要能够根据最近的收盘价进行填补。  以前也有相应的R处理代码供使用。不过在和同学交流时发现，这个代码运行经常报错。因此，我自己就编了一个。下面说说我编写的思路。
+2 算法设计 我设计这个算法的思路很朴素。首先，指数每天都有不会缺失。因此，我首先把指数都读进来提取出指数的时间点 和收盘信息。 然后，根据成分股的个数创建合适的矩阵先保存好指数数据。如下图所示。
+接着，对第一个成分股进行处理——把时间 和收盘价 提取出来。先不用管它哪里缺失了需不需要填充数据。
+ 我们要明确一点，导出的时间段内，指数肯定是最完整的。因此，我们将成分股按照时间跟它匹配肯定可以实现。
+ 那么，我们就根据时间点 把第一个成分股匹配到指数所在的矩阵中，也就是下面这样的图像。
+从上图看出，第一支股票在时间点3和时间点4有缺失数据。那么按照填充要求，最近的时间点2有数据，因此可以用来填充，就得到了下面的结果。
+以此类推，我们把有的股票都按照时间匹配到这个矩阵中，并做好缺失数据填充，结果就是下面这样。
+那么最后就简单了——按照木桶原理 把前面没有信息的数据全部砍掉即可，如下图所示。
+3 R 程序代码 这个程序我当时为了赶作业图省事用了很多for循环，因此数据量大的时候，运行有点慢。
+程序分为日线数据处理代码 和分钟线数据处理代码。 显然，可以把这两个合并到一起，不过课已上完我就懒得弄了。
+另外，这是根据西南金点子软件 导出数据结构编写的，其他金融软件导出的数据对应改下应该就没问题了。
+- 代码使用方式
+【1】我桌面是默认的工作目录【2】上证指数日线csv数据放在桌面上【3】桌面上的data文件夹用来放置50只成分股csv数据（一定要保存成csv格式）那么参数就可以写成wdir&amp;lt;-&amp;quot;C:/Users/***/Desktop/&amp;quot; ######## (要换成自己的路径)filedir &amp;lt;- &amp;quot;data&amp;quot;index.name &amp;lt;- &amp;quot;sz50.csv&amp;quot;data_org(wdir,filedir,index.name)## 日线数据函数minutedata_org(wdir,filedir,index.name)## 分钟线数据函数其中出现下面警告直接无视，这只是将字符转换成数字时系统的温馨提示。Warning message:In data_org(&amp;quot;C:/Users/tom/Desktop/&amp;quot;, &amp;quot;data&amp;quot;, &amp;quot;sz50.csv&amp;quot;) :NAs introduced by coercion程序运行后就将分散的指数和成分股数据按照时间整合到一起了，其中缺失数据用前一天补充。 - 日线处理程序</description>
+    </item>
+    
+    <item>
+      <title>提升R的运算速度</title>
+      <link>https://jiandan94.github.io/note/rparallel/</link>
+      <pubDate>Mon, 23 Mar 2020 00:00:00 +0000</pubDate>
+      
+      <guid>https://jiandan94.github.io/note/rparallel/</guid>
+      <description>最近有读者私信希望介绍R并行计算的方法。在处理较大规模问题时，默认单线程的R显得力不从心。提升运算速度确实在数据分析中意义重大，其中酸爽调参侠定深有感触。
+不过我觉得饭要一口一口吃，如果算法先天不足、设计不合理，指望通过某个函数或程序包强行提升运算速度，就很难得到满意的结果。
+因此，我打算从一些简单的细节入手，给大家分享R运算速度提升的常见方法和思维误区。
+1. 内置函数与向量化思维 R对常见的运算如矩阵乘积，进行过专门的优化。那么，我们应当有意识将算法中的相关部分转用R优化过的内置函数处理，从而降低计算成本。
+又如，我们在学习模型时，常常看到作者用分量形式展示模型的求解过程——虽然这令人易懂，但让我们在设计算法时极易忽视将其向量化，最后造成计算开销骤增。
+- 案例展示 我们不妨考虑不带截距项的单变量最小二乘模型
+$$\hat{\beta}=arg\min\sum_{i=1}^n\left( y_i - x_i\hat{\beta}\right)^2$$
+很容易得到最小二乘解为
+$$\hat{\beta} = \frac{\sum_{i=1}^nx_iy_i}{\sum_{i=1}^nx_i^2}$$
+这时，你可能将程序写成
+## 算法1ols1 &amp;lt;- function(x, y){a1 &amp;lt;- 0a2 &amp;lt;- 0for(i in 1:length(y)){a1 &amp;lt;- a1 + x[i]*y[i]a2 &amp;lt;- a2 + x[i]^2}return(a1/a2)} 假如你知道R中*的用法，你可能会将程序写成
+## 算法2ols2 &amp;lt;- function(x, y){return(sum(x*y)/sum(x^2))} 当然你还可以写成向量形式
+## 算法3ols3 &amp;lt;- function(x, y){return(c(x%*%y/x%*%x))} 为了揭示这三者计算效率的差别，我们不妨从标准正态分布中产生1000个观测，重复计算100次的结果如下
+&amp;gt; x &amp;lt;- rnorm(1000)&amp;gt; y &amp;lt;- x*2 + 0.</description>
+    </item>
+    
+    <item>
+      <title>R制作词云</title>
+      <link>https://jiandan94.github.io/note/wordcloud-introduction/</link>
+      <pubDate>Sun, 22 Jul 2018 00:00:00 +0000</pubDate>
+      
+      <guid>https://jiandan94.github.io/note/wordcloud-introduction/</guid>
+      <description>顾名思义，词云就是由词汇组成类似云彩的图形。对于篇幅庞大的文本而言，使用词云进行描述可以过滤掉很多冗杂而无意义的信息，诸如空格、标点符号、停词（像 and，or，but 等）等。
+ 1 什么是词云？ 词云是近几年来比较新潮的一个名词，是很多媒体或者社交软件用来展现文本中“关键词”出现频率的有效手段。
+观看者一眼扫过就可以快速获取文本中的高频词汇信息。 因此，词云在文本可视化展示中有着很强的表现力。
+词云制作需要词和相应频率的信息，但通常我们面临的是原始文本数据。因此，本文试着完整展示整个过程——先从原始文本数据出发，经过必要的数据清洗，最后实现画词云的目的。
+在实现过程中需要借助强大的文本处理包tm包和SnowballC包，以及具有较大可操作性的词云制作包wordcloud2包，大家提前在 R 中安装好。
+install.packages(&amp;quot;tm&amp;quot;)install.packages(&amp;quot;SnowballC&amp;quot;)install.packages(&amp;quot;wordcloud2&amp;quot;) 2 案例导入  本案例是Brett Lantz所著的《机器学习与R语言》中的相关章节内容的重现。
+ 我们考虑垃圾短信分类问题——现实中很多人深受垃圾短信其害，因此我们希望设计一套算法通过分析短信中的文本内容来判断其是否为垃圾短信从而采取规避措施。
+sms_raw &amp;lt;- read.csv(&amp;quot;sms_spam.csv&amp;quot;,stringsAsFactors = F)str(sms_raw)&#39;data.frame&#39;: 5559 obs. of 2 variables:$ type: chr &amp;quot;ham&amp;quot; &amp;quot;ham&amp;quot; &amp;quot;ham&amp;quot; &amp;quot;spam&amp;quot; ...$ text: chr &amp;quot;Hope you are having a good week. Just checking in&amp;quot; &amp;quot;K..give back my thanks.&amp;quot; &amp;quot;Am also doing in cbe only. But have to pay.</description>
+    </item>
+    
+  </channel>
+</rss>

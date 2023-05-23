@@ -1,0 +1,28 @@
+<?xml version="1.0" encoding="utf-8" standalone="yes"?>
+<rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
+  <channel>
+    <title>经典算法理论 on KAI&#39;s academic page</title>
+    <link>https://jiandan94.github.io/tags/%E7%BB%8F%E5%85%B8%E7%AE%97%E6%B3%95%E7%90%86%E8%AE%BA/</link>
+    <description>Recent content in 经典算法理论 on KAI&#39;s academic page</description>
+    <generator>Hugo -- gohugo.io</generator>
+    <language>en-us</language>
+    <lastBuildDate>Sat, 25 Jun 2022 00:00:00 +0000</lastBuildDate><atom:link href="https://jiandan94.github.io/tags/%E7%BB%8F%E5%85%B8%E7%AE%97%E6%B3%95%E7%90%86%E8%AE%BA/index.xml" rel="self" type="application/rss+xml" />
+    <item>
+      <title>交替最小化：凸优化下的收敛性分析</title>
+      <link>https://jiandan94.github.io/note/am-algorithm-and-its-convergence-analysis/</link>
+      <pubDate>Sat, 25 Jun 2022 00:00:00 +0000</pubDate>
+      
+      <guid>https://jiandan94.github.io/note/am-algorithm-and-its-convergence-analysis/</guid>
+      <description>交替最小化 (alternating minimization) 算法在很多领域中有着广泛的应用场景。本文主要讨论凸优化情形下AM算法的收敛性，内容来源于对Beck（2015）的翻译。
+1 问题的引入与基本假设 1.1 问题的引入 在本文中，AM算法考虑如下的优化问题：
+$$ \min_{y\in\mathbb{R}^{n_1}, z\in\mathbb{R}^{n_2}} {H(y, z) \equiv f(y, z) + g_1(y) + g_2(z)} \qquad (1) $$
+其中 $f, g_1, g_2$ 被假定满足如下的条件：
+【A】$g_1: \mathbb{R}^{n_1}\mapsto (\infty, \infty]$ 和 $g_2: \mathbb{R}^{n_2}\mapsto (\infty, \infty]$ 都是闭函数、真凸函数 (proper convex functions)，且在各自定义域内被假定为次可微的。
+【B】$f$ 是在 $\mathrm{dom}g_1\times \mathrm{dom}g_2$ 上连续、可导的凸函数。
+ 真函数 (proper functions)，是在 $[-\infty, +\infty] = \mathbb{R}\cup{\pm\infty}$ 上扩展定义的实值函数，满足：定义域非空集、在 $-\infty$ 处从不取值以及不恒等于 $+\infty$。
+ 针对优化问题 (1)，交替最小化 (alternating minimization，AM) 算法的一般流程如下所述：
+第一步：初始化 $y_0\in \mathrm{dom}g_1, z_0\in \mathrm{dom}g_2$ 使得</description>
+    </item>
+    
+  </channel>
+</rss>

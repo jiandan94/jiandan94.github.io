@@ -1,0 +1,72 @@
+<?xml version="1.0" encoding="utf-8" standalone="yes"?>
+<rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
+  <channel>
+    <title>变量选择 on KAI&#39;s academic page</title>
+    <link>https://jiandan94.github.io/tags/%E5%8F%98%E9%87%8F%E9%80%89%E6%8B%A9/</link>
+    <description>Recent content in 变量选择 on KAI&#39;s academic page</description>
+    <generator>Hugo -- gohugo.io</generator>
+    <language>en-us</language>
+    <lastBuildDate>Thu, 01 Sep 2022 00:00:00 +0000</lastBuildDate><atom:link href="https://jiandan94.github.io/tags/%E5%8F%98%E9%87%8F%E9%80%89%E6%8B%A9/index.xml" rel="self" type="application/rss+xml" />
+    <item>
+      <title>非凸惩罚之SCAD简介</title>
+      <link>https://jiandan94.github.io/note/scad/</link>
+      <pubDate>Thu, 01 Sep 2022 00:00:00 +0000</pubDate>
+      
+      <guid>https://jiandan94.github.io/note/scad/</guid>
+      <description>变量选择是高维统计建模中的重要内容。自1996年Tibshirani提出LASSO后，基于正则化模型的变量选择研究日益壮大、独领风潮。LASSO采用 $l _1$ 惩罚，得益于 $l _1$ 罚项在零点的奇异性，LASSO可以同时实现系数稀疏化（变量选择）和系数估计。事实上，LASSO估计可以看成一个软阈值（soft thresholding）准则，即它将绝对值较小的系数估计直接压缩成零，而较大的系数估计则做了一个有偏估计。因此，虽然LASSO优点众多，但是不容忽视的是LASSO有对大系数低估的缺陷。本文介绍了Fan和Li（2001）提出一种非凸罚项，称之为SCAD（smoothly clipped absolute deviation）罚项。与LASSO不同，SCAD非凸，其对应的正则化模型不仅能够同时实现变量选择和参数估计，还拥有更加好的统计性质，即Oracle性。
+1 问题的引入 考虑线性模型
+$$ y = X\beta + \epsilon \qquad (1) $$
+其中 $y\in \mathbb{R}^n$ 是观测向量，$X\in \mathbb{R}^{n\times p}$ 是设计阵（design matrix），$\beta\in \mathbb{R}^p$ 是系数向量，$n$ 是样本的个数，$p$ 是变量的个数。我们假定模型（1）是稀疏的，即存在一部分系数为零（对应的变量为冗余变量）、其余系数非零（对应的变量为重要变量）。不失一般性，我们假定前 $q$ 个变量重要，则 $\beta _1, \ldots, \beta _q \neq 0$；后$p - q$ 个变量冗余，则 $\beta _{q+1}, \ldots, \beta _p = 0$。此外，本文研究的是固定维情形，即 $p$ 随着 $n$ 的增大保持不变。
+在前言中，我们曾提到LASSO罚项对大系数低估的缺陷。那么，一个良好的罚项应当具有怎样的性质呢？考虑关于模型（1）的惩罚最小二乘
+$$ arg\min _{\beta} \frac12 \Vert y - X\beta\Vert^2 + \lambda\sum _{i=1}^p p _j(\vert \beta _j\vert) $$</description>
+    </item>
+    
+    <item>
+      <title>高维情形下非凸惩罚SVM的参数一致性</title>
+      <link>https://jiandan94.github.io/note/svm-with-non-convex-penalization/</link>
+      <pubDate>Sun, 28 Aug 2022 00:00:00 +0000</pubDate>
+      
+      <guid>https://jiandan94.github.io/note/svm-with-non-convex-penalization/</guid>
+      <description>传统的支持向量机模型（support vector machine，SVM）可以适用统计中的正则化模型框架，即损失+罚项的结构，其中SVM采用的是hinge损失函数+$l_2$ 罚项。然而，$l_2$ 罚项没有稀疏能力，这使得传统SVM在层见迭出的高维数据分析中应用受限。随着统计（和优化）领域中LASSO等具有变量选择能力的罚项的研究发展，一些学者提出稀疏SVM并讨论了估计量的相关性质。本文主要介绍了中度高维（moderately high dimensions）下非凸惩罚线性SVM的变量选择一致性，主要内容来源于对Xiang等（2016）的翻译。
+1 问题的引入 考虑二分类问题，令 $\lbrace(X_i, Y_i)\rbrace_{i=1}^n$ 是从未知总体分布 $P(X, Y)$ 中随机抽取的样本，其中 $Y_i\in {-1, +1}$ 是标签，$X_i = (X_{i0}, X_{i1}, \ldots, X_{ip})^T = (1, (X_i^ *)^T)^T$ 是协变量。那么，传统的线性SVM（linear SVM）可以写成如下的优化问题：
+$$ \min_{\beta} \frac 1n \sum_{i=1}W_i(1 - Y_iX_i^T\beta)_+ + \lambda(\beta ^ *)^T\beta ^ * $$
+其中 $\beta = (\beta_0, \beta_1, \ldots, \beta_p)^T = (\beta_0, (\beta ^ *)^T)^T$ 是分类超平面的法向量（首个元素为截距项），$(1 - u)_+ = \max{1 - u, 0}$ 是hinge损失函数，$\lambda &amp;gt; 0$ 是正则化参数。注意到，上式与经典SVM相比多了 $W_i$，它具体的取值如下</description>
+    </item>
+    
+    <item>
+      <title>LASSO的变量选择一致性之不可表示性条件</title>
+      <link>https://jiandan94.github.io/note/irrepresentable-condition/</link>
+      <pubDate>Sun, 10 Oct 2021 00:00:00 +0000</pubDate>
+      
+      <guid>https://jiandan94.github.io/note/irrepresentable-condition/</guid>
+      <description>高维稀疏化技术是大数据分析的重要方法之一。以LASSO为代表的模型选择方法，在过去的20多年间（20世纪90年代以来）得到了众多学者的关注并进行了深入的研究。目前，LASSO类方法的统计理论和求解算法的相关成果较为丰富，仍有大量学者进行相关的研究。这篇博客与其他几篇博客围绕LASSO方法进行系列的介绍，主要包括LASSO的基本概念、变量选择一致性、参数估计的界、主流求解算法等统计理论和优化算法方面的重要结果。
+本文探讨了Zhao和Yu（2006）关于LASSO模型一致性所提出的不可表示性条件（Irrepresentable Condition）。在固定维和发散维的情形下，作者证明了不可表示性条件是LASSO随着样本量增大而选出正确模型的几乎必要和充分条件。本文相关的证明技巧和研究结果都很经典，故学习该理论在研究稀疏化技术中非常必要。
+1 背景介绍 1.1 问题的提出 考虑如下的线性模型： $$ Y = X\beta^* + \epsilon \qquad (1) $$ 其中 $Y = (y_1, \ldots, y_n)^T$​​ 是 $n \times 1$​​ 的响应变量，$X = (X_1, \ldots, X_p) = (x_1^T; \ldots; x_n^T)$​​ 是 $n\times p$​​ 的设计矩阵，这里 $X_j$​​ 是第 $j$​​ 个变量，$ x_i $​​ 是第 $i$​​ 个样本。$\beta^ * = (\beta_1^ * , \ldots, \beta_p^ * )^T$​​ 是回归系数。$\epsilon = (\epsilon_1, \ldots, \epsilon_n)^T$​​ 均值为0、方差为 $\sigma ^ 2$​​​ 的独立同分布的随机变量。
+由于实际问题中数据可能包含冗余变量，利用全部变量构建的模型将会存在解释性差的问题。对此，我们需要考虑变量选择，关于这个话题可参见我先前博客的相关介绍。本文主要探讨的是经典的变量选择方法——LASSO——的统计性质，即变量选择一致性。
+假设 $ \hat{\beta}^ * $ 是如下LASSO模型 $$ \begin{equation} \hat{\beta}^ * = arg\min_{\beta} \Vert Y - X\beta\Vert_2^2 + \lambda\Vert \beta\Vert_1 \qquad (2) \end{equation} $$ 的估计。其中 $\lambda&amp;gt;0$​ 是调节参数，控制着系数的压缩程度。</description>
+    </item>
+    
+    <item>
+      <title>变量选择与LASSO</title>
+      <link>https://jiandan94.github.io/note/lasso-introduction/</link>
+      <pubDate>Tue, 07 Apr 2020 00:00:00 +0000</pubDate>
+      
+      <guid>https://jiandan94.github.io/note/lasso-introduction/</guid>
+      <description>1 为什么要做变量选择？  变量选择又叫模型选择，因为选出不同的变量自然就建立出不同的模型。近30年来，变量选择理论繁荣发展并逐渐渗透到各个领域中，成为大数据时代背后的中坚理论之一。
+ 随着技术手段的发展和丰富，我们获取数据变得越来越容易，对于一个问题可能搜集到成百上千的变量。有人说，变量越多对一个问题的刻画就越细致，这是好事啊。那么，我们为什么在建立模型时要煞费苦心思考变量选择问题呢？
+一方面，搜集到的变量中可能存在与目标完全无关的变量（冗余变量）。如果将冗余变量纳入模型之中肯定会得到一个错误的模型，用其进行预测自然就会做出误判，这明显与我们的目标相违背。因此，模型能够剔除不相关变量显得很重要。
+另一方面，尽管有些变量已知和目标相关，但实际的影响微乎其微（类似线性模型中变量系数的绝对值近乎为零），把这些变量包含在模型中无疑增加了理解模型的难度。比如，建立一个含有50+变量与一个仅有5个变量的公司员工能力评估模型，如果两者在评估员工能力时效果相当，显然后者更易于理解员工能力的影响因素且更易于指导实际工作。
+所以，研究变量选择是很有现实意义的。
+2 早期的思考 原有的方法若可用，就省的重新造轮子了。然而，经典的最小二乘 (OLS) 没有变量筛选的能力。回忆OLS估计表达式可知，不论变量是否重要，OLS表达式
+$$ \hat{\beta}^{ols} = (X^TX)^{-1}X^Ty $$
+没有体现出变量是否重要的差异性。
+因此，大家开始采用的是子集回归法 (subset regression) 而不是OLS方法。
+子集回归的思想很朴素。给定数据集，我们从中选出最佳变量组合建立回归模型即可 (全子集回归)。不过，考虑变量的所有组合，这和变量数 $p$ 呈 $2^p$ 关系。这种指数级的关系使得全子集回归成本高昂、不切实际。因此，大家想到一种折衷的办法——考虑一部分变量组合，找到其中的最优模型。这种思路类似优化理论的局部最优解，不过也可以得到较为满意的结果。相关的方法有逐步回归 (stepwise regression)等。
+子集回归有个严重缺陷：当原始数据中加入或者剔除某些变量后，子集回归得到的新模型可能发生巨大的变动。 比如，研究基因和某个疾病之间的关系。先搜集100个基因用子集回归得到3个重要的基因。后面研究后发现另外几个基因可能也和该疾病有关，但用子集回归重新建模后，原先的3个基因竟然没有出现在新模型中！这让人对该方法的可靠性产生怀疑。
+于是，就轮到LASSO上场了。
+3 LASSO模型 LASSO是Least Absolute Shrinkage and Selection Operator 的缩写。据LASSO的提出者Tibshirani本人说，LASSO是受到Breiman (1995) 提出的Nonnegative Garotte方法启发而得到的。NG方法首先建立原始数据的OLS回归，然后对得到的系数施加一个带有非负权重的约束惩罚，使得某些影响较小的系数被直接压缩到零，从而实现变量选择的目的。
+$$ \begin{split} NG:\quad&amp;amp;\min \sum _{i=1}^n (y_i - \sum _{j=1}^p t_j \hat{\beta} _j^{ols} x _{ij})^2 \newline &amp;amp;t_j\geq 0,\quad\sum _{j=1}^p t_j \leq s \end{split} $$</description>
+    </item>
+    
+  </channel>
+</rss>

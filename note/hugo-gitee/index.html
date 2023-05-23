@@ -1,0 +1,141 @@
+<!DOCTYPE html>
+<html lang="en-us">
+  <head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>Hugo&#43;Gitee搭建个人专属博客 | KAI&#39;s academic page</title>
+    <link rel="stylesheet" href="/css/style.css" />
+    <link rel="stylesheet" href="/css/fonts.css" />
+    
+  </head>
+
+  <body>
+    <nav>
+    <ul class="menu">
+      
+      <li><a href="/">Home</a></li>
+      
+      <li><a href="/post/selected-publications">Publications</a></li>
+      
+      <li><a href="/post/talks">Talks</a></li>
+      
+      <li><a href="/post/teaching-and-services">Teaching and Services</a></li>
+      
+      <li><a href="https://www.qikai.site/blog">Blog</a></li>
+      
+    </ul>
+    <hr/>
+    </nav>
+
+<div class="article-meta">
+<h1><span class="title">Hugo+Gitee搭建个人专属博客</span></h1>
+
+<h2 class="date">2020/07/31</h2>
+</div>
+
+<main>
+<p>相较于QQ、微博、CSDN等博客（空间）平台，个人专属博客有很多优势：网站主题可定制性更强，博客写作更自由，保存与迁移更灵活，不会被删帖（哈哈哈哈~）等等。不过，对于我们广大网站搭建小白，学习从头部署一个博客网站耗时耗力、实属没必要，我们完全可以站在“巨人”的肩膀上快速实现部署博客的目的。</p>
+<p>本期给大家介绍如何使用Hugo和Gitee部署私人博客网站，你需要提前安装好Git软件。当然，想要成功实现本期的内容，懂得一些简单的Git命令和Markdown的语法不可或缺，因为网站的搭建是基于Git，网站的博客渲染是基于Markdown的。</p>
+<h2 id="1-hugo安装与配置">1 Hugo安装与配置</h2>
+<blockquote>
+<p>Hugo is one of the most popular open-source static site generators. With its amazing speed and flexibility, Hugo makes building websites fun again.</p>
+</blockquote>
+<p>Hugo是由Go语言实现的静态网站生成器，相较于同类的Jekyll和Hexo，Hugo最大的优势在于编译、渲染速度快。因此，Hugo 非常适合博客、文档等等网站的生成。目前，Hugo在Windows、MAC、Linux等平台都可下载安装。</p>
+<p>虽然制作网站听起来很复杂，但是Hugo实际使用过程很友好，加之Hugo官网有300+博客主题可供下载，用户可以在很短的时间内生成满意的博客网站。</p>
+<p>首先我们从官方渠道下载相应的安装包，Win10平台实际就是一个Zip压缩包，解压后可以看到一个50M不到的hugo.exe程序——没错！我们生成博客网站的主角就是它！</p>
+<p>我们只需将其中<code>hugo.exe</code>程序放在你喜欢的某个目录下（<strong>后面不要改动位置</strong>），例如我放在<code>D:\Program Files\hugo</code>下。在正式使用之前，我们需要将这个<strong>目录保存到系统环境变量</strong>中，这可以在网上轻易的找到教程，故不赘述。</p>
+<blockquote>
+<p>所谓环境变量，简单来说就是在系统层面给这个程序的安装路径进行登记，使得我们通过CMD或Git直接输入程序名就能全局调用。</p>
+</blockquote>
+<p>下面，我们随便在某处右键Git Bash Here打开Git，然后输入</p>
+<pre><code class="language-R">hugo version
+</code></pre>
+<p>若返回了相应的版本号，如</p>
+<img src="http://jiandan94.gitee.io/md-figures/git/hugo-version.png" width="600"/>
+<p>则说明Hugo配置成功。</p>
+<h2 id="2-初始化博客网站">2 初始化博客网站</h2>
+<p>我们在某处，如电脑桌面，右键Git Bash Here打开Git，然后输入</p>
+<pre><code class="language-R"># hugo new site &lt;网站文件存放的名字&gt;
+hugo new site myblogfiles
+</code></pre>
+<p>可以看到桌面出现一个名为myblogfiles的文件夹，里面就是生成的网站的配置文件。</p>
+<img src="http://jiandan94.gitee.io/md-figures/git/newsite-files.png" width="600"/>
+<p>我们主要了解这么几个文件（夹）的作用即可：</p>
+<ul>
+<li>content：通常存放网站用到的文档</li>
+<li>static：通常存放网站使用到的图片、音视频</li>
+<li>themes：网站使用到的主题</li>
+<li>config.toml：网站的配置文件</li>
+</ul>
+<p>想要预览生成的网站，可以在myblogfiles目录下打开Git，然后输入命令</p>
+<pre><code class="language-R">hugo server
+</code></pre>
+<p>然后在自己的浏览器上访问网址：http://localhost:1313/ 就可看到当前网站的模样。</p>
+<img src="http://jiandan94.gitee.io/md-figures/git/hugo-server.png" width="600"/>
+<p><code>hugo server</code>运行后，只要不在Git中使用快捷键Ctrl+C停止，**就可以对网站的改动实时进行预览！**显然，我们打开网页什么也看不到——因为我们还没有对网站进行个人配置，自然什么也看到。</p>
+<h2 id="3-使用hugo主题">3 使用Hugo主题</h2>
+<p>我们不必自己将网站从头配置成型（那样学hugo的意义也不大了），只须学会使用他人已经设计好的Hugo主题即可。目前，Hugo官网聚集了300+博客主题，内容涵盖学术风格类博客、技术风格类博客、文艺风格类博客等，可以直接下载使用。</p>
+<img src="http://jiandan94.gitee.io/md-figures/git/hugo-theme.png" width="600"/>
+<p>进入任一博客主题，你可以点击Demo查看网站的显示效果——换句话说，自己以后的网站就长这样，不同之处是内（nei）容（han）。有得必有失嘛，方便的同时必然牺牲了一些个性化，不过比之于平台提供的个人主页，Hugo主题的自由性显然高太多了。此外，博客主题的主页还详细介绍了该主题的使用方式。</p>
+<img src="http://jiandan94.gitee.io/md-figures/git/theme-pure.png" width="600"/>
+<p>我们下载上述的Pure主题压缩包，解压后（文件夹名为pure）放在网站的theme文件下。</p>
+<p>为了让使用者可以在本地看到主题的效果，每个主题都含有一个名为exampleSite的文件夹，里面有主题作者事先放好的材料，他们最终将在网站上呈现出来。网站呈现的效果一般就是文章+图片（音视频），根据我们前面的介绍，通常只用干三件事：</p>
+<ul>
+<li>
+<p>将exampleSite中的content文件夹内容复制到我们网站的content文件夹中；</p>
+</li>
+<li>
+<p>将exampleSite中的配置文件替换掉我们网站的配置文件；</p>
+</li>
+<li>
+<p>将pure（主题根目录）中的static文件夹内容复制到我们网站的static文件夹中。</p>
+</li>
+</ul>
+<p>这时，我们回到网站的根目录打开Git，输入命令</p>
+<pre><code class="language-R">hugo
+hugo server
+</code></pre>
+<p>再访问 http://localhost:1313/ 时就看到pure主题渲染出的网站了</p>
+<img src="http://jiandan94.gitee.io/md-figures/git/pure.png" width="600"/>
+<p>可见，pure主题下博客分成三大区域展示，对于博文可以进行归档（Archive）、分类（Categories）和标签（Tags）。此外，该主题还可以设置博客的评论方式、分享渠道等。</p>
+<p>总之，网页上我们看到的内容基本都可以替换成自己的信息。具体替换要参考每个主题的使用介绍，但基本都是围绕content（放文章）、static（放图片、音视频）两个文件夹和网站配置文件。</p>
+<h2 id="4-实现外网访问">4 实现外网访问</h2>
+<p>如果做好的博客只能在本地自娱自乐，那就太没意思了！因此，学会如何实现外网访问很重要。这里我们选用国内的Gitee进行网站部署。</p>
+<blockquote>
+<p>Gitee不是必选项，国外的Github才是主流。不过因其服务器在国外，国内访问速度很慢，使得他人浏览博客的体验大打折扣。</p>
+</blockquote>
+<p>首先，我们在Gitee上新建一个仓库，用来存放渲染好的博客网站的全部文件。这里，一定要注意！一定要注意！一定要注意！仓库的名称必须和你的Gitee账户名一致。</p>
+<blockquote>
+<p>其实也不是必须一致，只是我们最终想实现通过网址 https://用户名.gitee.io/ 来访问博客的效果。如果你设置成其他名称，那博客网址就变成：https://用户名.gitee.io/博客名/ ，略显累赘。</p>
+</blockquote>
+<p>然后，我们把网站本地配置文件中的链接改成自己的博客链接，也即是将<code>baseURL</code>对应的网址换成自己的博客链接。</p>
+<p>接着，我们就要把本地渲染好的博客网站文件推送到仓库中。问题来了：推送哪些文件呢？我们在博客目录下可以看到一个名为public的文件夹，它是在运行<code>hugo</code>后出现的——其中包含了博客网站的全部配置和内容。因此，我们只要将public文件夹下的内容推送到仓库即可。</p>
+<p>最后，我们回到Gitee中的博客仓库，可以看到服务中有个Gitee Pages选项。</p>
+<img src="http://jiandan94.gitee.io/md-figures/git/gitee-pages.png" width="600"/>
+<p>点击进入，选择强制使用HTTPS并更新。等待更新完成，博客网站就部署成功了！</p>
+<blockquote>
+<p>Gitee每次将public文件推送到仓库，要手动进行更新，否则博客还是前一次的内容；而自动更新是要收费的！Github可以免费使用自动更新功能，使用更友好，就是访问速度头疼。</p>
+</blockquote>
+<p>读者可以访问<strong>我的个人博客</strong>，看看pure主题的最终效果。欢迎大家对我的博文评论，不喜勿喷~</p>
+<pre><code class="language-R"># 我的个人博客网址
+https://jiandan94.gitee.io/
+</code></pre>
+<h2 id="5-结语">5 结语</h2>
+<p>本期学习了使用Hugo和Gitee搭建个人博客。从上面的介绍来看，Hugo上手简单、渲染高效且配有众多主题进行网站快速部署。如果觉得有意思，就赶快动手实践吧！</p>
+<h3 id="相关链接">相关链接</h3>
+<p>Hugo官网：https://gohugo.io/</p>
+<p>Hugo主题网址：https://themes.gohugo.io/</p>
+<p>Hugo下载网址：https://github.com/gohugoio/hugo/releases</p>
+
+</main>
+
+  <footer>
+  
+  
+  <hr/>
+  © Kai Qi 2019 &ndash; 2023 | <a href="https://github.com/jiandan94">Github</a> | <a href="https://scholar.google.com.hk/citations?user=-9xB_VQAAAAJ&amp;hl=zh-CN">Google Scholar</a>
+  
+  </footer>
+  </body>
+</html>
+

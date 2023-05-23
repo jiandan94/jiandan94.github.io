@@ -1,0 +1,124 @@
+<?xml version="1.0" encoding="utf-8" standalone="yes"?>
+<rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
+  <channel>
+    <title>linux on KAI&#39;s academic page</title>
+    <link>https://jiandan94.github.io/categories/linux/</link>
+    <description>Recent content in linux on KAI&#39;s academic page</description>
+    <generator>Hugo -- gohugo.io</generator>
+    <language>en-us</language>
+    <lastBuildDate>Sat, 12 Sep 2020 00:00:00 +0000</lastBuildDate><atom:link href="https://jiandan94.github.io/categories/linux/index.xml" rel="self" type="application/rss+xml" />
+    <item>
+      <title>Valine: 高效的无后端评论系统</title>
+      <link>https://jiandan94.github.io/note/valine-introduction/</link>
+      <pubDate>Sat, 12 Sep 2020 00:00:00 +0000</pubDate>
+      
+      <guid>https://jiandan94.github.io/note/valine-introduction/</guid>
+      <description>腾讯在2018年就宣布以后申请的公众号不再支持留言评论功能。确实，无法和读者进行直接的交流沟通会严重打击分享者的热情。所以我的好友H君经常唠叨，依托平台大都会受限制而自己往往又无能为力，要尽量去平台化啊！
+在之前的博客中，我曾分享过利用Hugo+Gitee快速构建个人博客实现去平台化的经验，但并没有涉及博客评论如何设置。这篇博客就介绍一款基于LeanCloud的快速、简洁且高效的无后端评论系统——Valine。
+ 话说我又不是程序猿，看来以后要抵制程序猿H君的洗脑了。
+ 1 准备工作 实现个人博客评论功能，我们首先自然需要先搭建好个人博客网站，推荐Hugo+Gitee/Github（因为我只会用Hugo搭建，哈哈哈），具体方法可以看网上教程或者我前面的经验分享文章。一般来说，Hugo上的博客主题都整合了Valine评论，我们只需要进行相应的配置即可。
+如上图，这是我的博客配置文件config.yml中关于评论系统的配置区域。
+2 开始配置 博客上面的评论留言数据自然要存放于某处，一般是放在服务器上，但并不是人人都有私人服务器。LeanCloud是一个简单易用（主要提供免费套餐）的云服务器，有强大的数据库支持。Valine的配置也即是将个人博客与之对接。
+首先，我们要去LeanCloud官网申请一个账号。为了后续的配置可以顺利进行，请申请国际版的账号。
+然后，我们登录国际版的LeanCloud，选择创建应用并输入一个你喜欢的名称，例如
+接着，点击进入到我们所创建的应用中，依次选择设置 &amp;gt; 应用Keys，便可以查看当前应用的账号（AppID）和密钥（AppKey）。
+最后，我们只需将上述的AppID和AppKey复制粘贴到博客配置文件config.yml中Vlaine配置区域的对应位置即可。
+Valine的基本配置就结束了。可以看出，使用Valine评论非常简单！其他的参数通过阅读后面的英文介绍即可理解其意义，我将我的设置列举如下
+   参数 值     notify true   verify true   placeholder 欢迎留言【填写邮箱后才能接收回复通知】   avatar mm   meta nick, mail   pageSize 10   visitor false    对一些参数设置做一点解释。由于可能需要和留言者交流，所以在评论框放了填写邮箱的提示，然后meta参数设置成可以允许留言者留下自己的昵称（nick）和用来接收评论反馈消息的邮箱（mail）。因为我的博客模板集成了其他的访问量统计方式，因此visitor参数设置false，即不需要通过LeanCLoud进行访问量统计。
+配置好了之后重新发布一下博客，即可在自己的每篇文章下看到评论框
+可见，Valine评论支持Markdown输入和表情输入，功能还是非常友好和强大的！留言者只需输入邮箱（对他人不可见），今后自己的评论有他人回复即会收到邮件通知和评论链接，点击链接便可直接跳转到原先的留言位置进行回复。
+3 评论邮件通知 文章有了新的评论，作者应该要能及时收到通知并快速进入到评论界面进行查看和回复；留言者的评论有了回复，正常情况应该能及时收到通知并快速进入原始评论的位置进行回复。Valine是利用邮箱通知实现该功能的。然而，你直接在config.yml将通知的参数notify设置成true，发现在博客下面评论后并不能收到邮箱通知！！！
+这么尴尬的事情自然还是有解决方案的。这里采用的是Valine-Admin的解决方案。
+首先，访问你的LeanCloud主页，进入到与博客绑定的应用中。
+然后，依次选择设置 &amp;gt; 邮箱模板，将用于重置密码的邮件主题和对应的内容分别改成下面的内容
+## 用于重置密码的邮件主题你在 {{appname}} 的评论收到了新的回复## 内容&amp;lt;p&amp;gt;Hi, {{username}}&amp;lt;/p&amp;gt;&amp;lt;p&amp;gt;你在 {{appname}} 的评论收到了新的回复，请点击查看：&amp;lt;/p&amp;gt;&amp;lt;p&amp;gt;&amp;lt;a href=&amp;quot;你的博客主页链接&amp;quot; style=&amp;quot;display: inline-block; padding: 10px 20px; border-radius: 4px; background-color: #3090e4; color: #fff; text-decoration: none;&amp;quot;&amp;gt;马上查看&amp;lt;/a&amp;gt;&amp;lt;/p&amp;gt; 该设置即为在有评论时将评论的内容和地址发送到对应的邮箱中。</description>
+    </item>
+    
+    <item>
+      <title>Hugo&#43;Gitee搭建个人专属博客</title>
+      <link>https://jiandan94.github.io/note/hugo-gitee/</link>
+      <pubDate>Fri, 31 Jul 2020 00:00:00 +0000</pubDate>
+      
+      <guid>https://jiandan94.github.io/note/hugo-gitee/</guid>
+      <description>相较于QQ、微博、CSDN等博客（空间）平台，个人专属博客有很多优势：网站主题可定制性更强，博客写作更自由，保存与迁移更灵活，不会被删帖（哈哈哈哈~）等等。不过，对于我们广大网站搭建小白，学习从头部署一个博客网站耗时耗力、实属没必要，我们完全可以站在“巨人”的肩膀上快速实现部署博客的目的。
+本期给大家介绍如何使用Hugo和Gitee部署私人博客网站，你需要提前安装好Git软件。当然，想要成功实现本期的内容，懂得一些简单的Git命令和Markdown的语法不可或缺，因为网站的搭建是基于Git，网站的博客渲染是基于Markdown的。
+1 Hugo安装与配置  Hugo is one of the most popular open-source static site generators. With its amazing speed and flexibility, Hugo makes building websites fun again.
+ Hugo是由Go语言实现的静态网站生成器，相较于同类的Jekyll和Hexo，Hugo最大的优势在于编译、渲染速度快。因此，Hugo 非常适合博客、文档等等网站的生成。目前，Hugo在Windows、MAC、Linux等平台都可下载安装。
+虽然制作网站听起来很复杂，但是Hugo实际使用过程很友好，加之Hugo官网有300+博客主题可供下载，用户可以在很短的时间内生成满意的博客网站。
+首先我们从官方渠道下载相应的安装包，Win10平台实际就是一个Zip压缩包，解压后可以看到一个50M不到的hugo.exe程序——没错！我们生成博客网站的主角就是它！
+我们只需将其中hugo.exe程序放在你喜欢的某个目录下（后面不要改动位置），例如我放在D:\Program Files\hugo下。在正式使用之前，我们需要将这个目录保存到系统环境变量中，这可以在网上轻易的找到教程，故不赘述。
+ 所谓环境变量，简单来说就是在系统层面给这个程序的安装路径进行登记，使得我们通过CMD或Git直接输入程序名就能全局调用。
+ 下面，我们随便在某处右键Git Bash Here打开Git，然后输入
+hugo version 若返回了相应的版本号，如
+则说明Hugo配置成功。
+2 初始化博客网站 我们在某处，如电脑桌面，右键Git Bash Here打开Git，然后输入
+# hugo new site &amp;lt;网站文件存放的名字&amp;gt;hugo new site myblogfiles 可以看到桌面出现一个名为myblogfiles的文件夹，里面就是生成的网站的配置文件。
+我们主要了解这么几个文件（夹）的作用即可：
+ content：通常存放网站用到的文档 static：通常存放网站使用到的图片、音视频 themes：网站使用到的主题 config.toml：网站的配置文件  想要预览生成的网站，可以在myblogfiles目录下打开Git，然后输入命令</description>
+    </item>
+    
+    <item>
+      <title>Git-Submodule的基本使用</title>
+      <link>https://jiandan94.github.io/note/git-submodule/</link>
+      <pubDate>Tue, 28 Jul 2020 00:00:00 +0000</pubDate>
+      
+      <guid>https://jiandan94.github.io/note/git-submodule/</guid>
+      <description>1 什么是Git-Submodule 在进行项目开发和管理的过程中，我们经常遇到这种情况：自己的A项目需要引用另一B项目中的内容，直接将B项目中的文件克隆合并到A项目中显得臃肿，不能保证两者的独立性；此外，直接克隆合并的方法也无法记录对于B项目的改动信息。
+Git给出了一种解决方案：将B项目作为A项目的Submodule进行植入。
+所谓Submodule，就是将一个代码仓库（次）作为另一个代码仓库（主）的子模块。在主项目开发过程中，既能引入Submodule中的内容，又能保证两者的相对独立。
+2 Submodule的创建 首先，我们在Gitee上创建两个新的仓库作为，其中一个作为主仓库（main-repository）而另一个作为子仓库（sub-module）。当然，刚刚创建的仓库还是平等的，没有主次之分。
+现在，我们在本地计算机的桌面上右键Git Bash Here打开Git终端，将main-repository仓库克隆到本地来
+# git clone &amp;lt;主仓库url&amp;gt;git clone git@gitee.com:jiandan94/main-repository.git 由于在创建仓库时我选择使用README初始化仓库，因此可以在本地看到仓库中有下面的文件
+下面，我们将创建的sub-module仓库以Submodule身份克隆到main-repository仓库中
+cd main-repository # 进入到main-repository仓库根目录# git submodule add &amp;lt;子仓库的url&amp;gt; &amp;lt;子仓库本地路径&amp;gt;git submodule add git@gitee.com:jiandan94/sub-module.git submod 我将Submodule直接放在main-repository仓库的根目录下，执行上述命令后可见目录中文件变成
+多了一个.gitmodules文件和submod文件夹，其中sub-module仓库中的文件都存放在submod文件夹中。进入到main-repository仓库的config文件中，可见最后一行添加了Submodule的信息
+至此，我们成功的将一个仓库以Submodule身份引入主仓库。
+现在我们将main-repository仓库同步到远程仓库中
+git add .git commit -m &amp;quot;upload submodule&amp;quot;git push -u origin master 这时去Gitee上查看main-repository仓库，发现多了.gitmodules文件和一个Submodule链接，点击链接可以跳转到我们在Gitee上创建的sub-module仓库。
+3 克隆带有Submodule的仓库 从上面可以看出，提交一个含有Submodule的仓库，不会将本地Submodule中的文件上传到main-repository仓库中，那么问题来了：克隆一个含有Submodule的远程仓库，会把Submodule仓库中的文件克隆下来么？
+我们不妨将本地的main-repository仓库文件夹删除掉，然后再次执行克隆命令得到
+然而，进入到submod文件夹中，发现是一个空文件夹！
+ 也就是说，直接克隆一个含有Submodule的仓库，是不会将Submodule对应的仓库中的文件克隆下来。
+ 为了将sub-module仓库中的文件也同步到本地，我们需要使用命令
+git submodule initgit submodule update 此时，再进入submod文件中，就可以看到同步过来的文件了。</description>
+    </item>
+    
+    <item>
+      <title>Git基本操作</title>
+      <link>https://jiandan94.github.io/note/git-basic-operation/</link>
+      <pubDate>Sat, 25 Jul 2020 00:00:00 +0000</pubDate>
+      
+      <guid>https://jiandan94.github.io/note/git-basic-operation/</guid>
+      <description>1 Git的工作原理 关于Git的简单介绍可以参照我的这篇博客。安装好Git之后，我们就要学会利用Git建立本地项目的代码仓库，以及同远程仓库进行同步。不过在学习搭建本地仓库之前，我们需要了解Git的工作原理，以便理解后续各段代码背后的含义。
+如上图所示。假设我们在本地计算机上建立一个仓库（文件夹）以存放项目的各个文件。进入该文件夹，也即是进入工作目录（working space）。然而，你直接在工作目录里面增加一个文件，比如files文件，从Git的视角来看，这个文件此时还不属于本地仓库的内容——换句话说，Git此时还没有登记该文件的信息。通过命令
+$ git add files 将files文件移到暂存区（Staged(indexed)）中，表明该文件即将存入本地仓库中。通过命令
+$ git commit -m &amp;quot;提交说明信息&amp;quot; 将暂存区的files文件移到本地仓库（Repository）中，并加上本次提交的的说明信息以方便以后快速了解本次操作的内容和目的。
+ 上面我多次用到移到这个词，但是在仓库中并没有真的出现Staged或者Repository等文件夹或内容。实际上，以上的操作只是Git用自己的方式记录仓库中文件的变化，这些变动信息保存在仓库的.git隐藏文件夹中。
+ 最后，我们通过命令
+$ git push 将本地的仓库同步到远程的仓库（Remote）中，完成本地和远程的连接。图中右侧的命令是每个阶段的逆操作。
+以上的介绍可以看出在Git的视角下，本地仓库的建立、改动以及和远程仓库的同步有着一套自身的规则，理解这套规则和理念有助于git的操作使用。
+2 本地仓库初始化 我们在本地计算机上建立一个文件夹来存放项目文件，然后进入到该文件中初始化仓库
+$ mkdir test $ cd test$ git init # 初始化仓库 此时，在test文件夹中便会出现一个.git隐藏文件夹，其中存放了仓库的各种信息如仓库的分支、操作的记录等。
+现在我们通过git status查看仓库的当前状态，返回结果
+$ git statusOn branch master # 在master分支上No commits yet # 没有仓库操作nothing to commit (create/copy files and use &amp;quot;git add&amp;quot; to track) 最后一句提示我们可以使用git add向暂存区添加文件。我们先创建一个文件aa.</description>
+    </item>
+    
+    <item>
+      <title>Git简介</title>
+      <link>https://jiandan94.github.io/note/git-introduction/</link>
+      <pubDate>Tue, 21 Jul 2020 00:00:00 +0000</pubDate>
+      
+      <guid>https://jiandan94.github.io/note/git-introduction/</guid>
+      <description>1 Git的历史 Git是一个分布式版本控制系统，由Linux的创始人Linus在开发Linux系统的过程中，为了各个参与者维护系统而开发的分布式版本控制系统。Git最初就是为了辅助Linux系统开发而诞生的，是版本控制系统Bitkeeper的替代者。
+Git是目前最先进的分布式版本控制系统。
+当然，版本控制系统除了分布式以外，还有其他的处理方案：
+ 如果项目在开发过程中的各个版本的文件都存储在一台电脑上，就称之为本地版本控制 。显然，这种方式不适用于多人协同开发，因此较为复杂的项目不适用该方案。 另外一种常用的版本控制方式为集中式版本控制，代表产品有：SVN，CVS，VSS等。这种方式下，项目的所有历史文件和记录都保存在中央服务器上；每个开发者的电脑上只有自己之前同步过后的版本，没有联网时，无法查看历史版本信息。因此，集中式版本控制容易出现单点故障。 目前比较流行的分布式版本控制方案以Git为代表，它将项目的所有版本信息保存在服务器上，每个开发者的电脑上同时也保存了所有的版本信息。如果A或者服务器端的文件损坏，可以通过B进行恢复，避免了单点故障。   其实集中版本控制方案也很有存在的价值，分布式方案也不是最优方案。例如，公司的项目若很重要，分布式版本控制下，参与者带着全部文件跑路也不是不可能。为了介绍Git，只能强行踩踩SVN了，哈哈哈哈
+ 2 Git的安装 首先去Git的官网下载相应的版本，当然，嫌下载速度慢的话可以去国内各个镜像进行下载，例如淘宝的镜像源下载即可。
+安装比较简单，记得选择在右键菜单中整合Git Bash，其他的直接无脑下一步就行了。
+安装好之后，我们可以在右键菜单中看到选项Git Bash Here，点击它会出现Git的命令行运行终端，并且当前的目录就是Git的工作目录。我们可以通过Git终端输入命令进行相应的操作和设置。
+3 常用的Linux命令 由于在Git使用中，我们通常使用命令行进行操作，这些命令又和Linux系统中的命令行格式类似，这里介绍一些常见的Linux命令。
+   命令 说明 示例     cd 改变工作目录 cd D:/ # 进入到D盘   cd .. 返回到上级目录    pwd 显示当前所在的路径    ls或ll 列出当前目录所有的文件    touch 在当前目录下新建一个文件 touch test.doc # 新建test.doc文件   rm 删除一个文件 rm test.</description>
+    </item>
+    
+  </channel>
+</rss>

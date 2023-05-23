@@ -1,0 +1,72 @@
+<?xml version="1.0" encoding="utf-8" standalone="yes"?>
+<rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
+  <channel>
+    <title>优化算法 on KAI&#39;s academic page</title>
+    <link>https://jiandan94.github.io/tags/%E4%BC%98%E5%8C%96%E7%AE%97%E6%B3%95/</link>
+    <description>Recent content in 优化算法 on KAI&#39;s academic page</description>
+    <generator>Hugo -- gohugo.io</generator>
+    <language>en-us</language>
+    <lastBuildDate>Sat, 25 Jun 2022 00:00:00 +0000</lastBuildDate><atom:link href="https://jiandan94.github.io/tags/%E4%BC%98%E5%8C%96%E7%AE%97%E6%B3%95/index.xml" rel="self" type="application/rss+xml" />
+    <item>
+      <title>交替最小化：凸优化下的收敛性分析</title>
+      <link>https://jiandan94.github.io/note/am-algorithm-and-its-convergence-analysis/</link>
+      <pubDate>Sat, 25 Jun 2022 00:00:00 +0000</pubDate>
+      
+      <guid>https://jiandan94.github.io/note/am-algorithm-and-its-convergence-analysis/</guid>
+      <description>交替最小化 (alternating minimization) 算法在很多领域中有着广泛的应用场景。本文主要讨论凸优化情形下AM算法的收敛性，内容来源于对Beck（2015）的翻译。
+1 问题的引入与基本假设 1.1 问题的引入 在本文中，AM算法考虑如下的优化问题：
+$$ \min_{y\in\mathbb{R}^{n_1}, z\in\mathbb{R}^{n_2}} {H(y, z) \equiv f(y, z) + g_1(y) + g_2(z)} \qquad (1) $$
+其中 $f, g_1, g_2$ 被假定满足如下的条件：
+【A】$g_1: \mathbb{R}^{n_1}\mapsto (\infty, \infty]$ 和 $g_2: \mathbb{R}^{n_2}\mapsto (\infty, \infty]$ 都是闭函数、真凸函数 (proper convex functions)，且在各自定义域内被假定为次可微的。
+【B】$f$ 是在 $\mathrm{dom}g_1\times \mathrm{dom}g_2$ 上连续、可导的凸函数。
+ 真函数 (proper functions)，是在 $[-\infty, +\infty] = \mathbb{R}\cup{\pm\infty}$ 上扩展定义的实值函数，满足：定义域非空集、在 $-\infty$ 处从不取值以及不恒等于 $+\infty$。
+ 针对优化问题 (1)，交替最小化 (alternating minimization，AM) 算法的一般流程如下所述：
+第一步：初始化 $y_0\in \mathrm{dom}g_1, z_0\in \mathrm{dom}g_2$ 使得</description>
+    </item>
+    
+    <item>
+      <title>无约束优化：基本概念总结</title>
+      <link>https://jiandan94.github.io/note/unconstrained-optimization/</link>
+      <pubDate>Thu, 22 Jul 2021 00:00:00 +0000</pubDate>
+      
+      <guid>https://jiandan94.github.io/note/unconstrained-optimization/</guid>
+      <description>凸优化是优化问题的重要分支之一，也是研究机器学习的重要工具之一。本文和其他几篇以“凸优化”为主题的博客都是我在学习Boyd所著《Convex Optimization》这本书时的笔记。因此，这些博客的内容结构和书中第5、9-11章节的框架相似，我在这里只不过罗列了书中的一些要点和个人的一点思考。
+ 带有等式约束、不等式约束的凸优化问题可以通过一些技巧转化成无约束问题。因此，研究无约束凸优化问题是学习凸优化算法的基础。本文主要介绍无约束优化问题的基本概念，如下水平集、条件数等。了解和掌握这些概念对认识和分析无约束凸优化问题有重要的帮助。
+1 无约束优化问题 我们研究下面形式的无约束优化问题 $$ \min f(x) $$ 其中 $f：\mathbb{R}^n\rightarrow \mathbb{R}$ 是二次可微凸函数。我们假定该问题存在最优解 $x^*$，对应最优值 $p^ * =\inf_x f(x)=f(x^ *)$。既然 $f$ 是可微凸函数，那么最优点应当满足最优性一阶微分条件，即 $$ \nabla f(x^ *)=0 $$ 这样，最小化 $f$​​ 就变成求解 $n$​​ 个变量 $x_1,\ldots,x_n$​​ 的 $n$​​ 个方程问题了。除了一些特殊情况，我们通常很难解析的求解上述一阶微分问题。实际中，我们一般采用迭代算法进行求解，也即是构造点列 $x^{(0)}$​​，$x^{(1)}$​​，$\ldots$​​ $\in \textrm{dom} f$​​，使得 $k\rightarrow\infty$​​ 时 $f(x^{(k)})\rightarrow p^ *$​​。这样的点列称之为优化问题的极小化点列。实际计算时通常给定容许误差 $\epsilon$​​，当 $f(x^{(k)})-p^ *&amp;lt;\epsilon$​​​​ 时算法终止。
+2 下水平集 函数 $f$ 的 $\alpha$-下水平集（sublevel sets） $C_{\alpha}$ 定义成 $$ C_{\alpha} = \lbrace x\in \textrm{dom}f | f(x)\leq \alpha \rbrace $$ 根据定义，$\alpha$-下水平集描述的是那些让 $f$ 取值小于等于 $\alpha$ 的 $x$ 所构成的集合，即定义域 $\textrm{dom}f$ 的一个子集。关于凸函数的$\alpha$-下水平集，我们有如下的结论：</description>
+    </item>
+    
+    <item>
+      <title>对偶模型理论基础</title>
+      <link>https://jiandan94.github.io/note/dual-problem/</link>
+      <pubDate>Wed, 23 Sep 2020 00:00:00 +0000</pubDate>
+      
+      <guid>https://jiandan94.github.io/note/dual-problem/</guid>
+      <description>凸优化是优化问题的重要分支之一，也是研究机器学习的重要工具之一。本文和其他几篇以“凸优化”为主题的博客都是我在学习Boyd所著《Convex Optimization》这本书时的笔记。因此，这些博客的内容结构和书中第5、9-11章节的框架相似，我在这里只不过罗列了书中的一些要点和个人的一点思考。
+ 在很多优化问题中，如SVM模型，我们常常将原问题的优化转换成对偶问题的优化。对偶问题有时可以简化求解，以及对模型有更多的认识。本文主要介绍有关对偶问题的一些概念。
+1 原始问题 我们考虑一般的优化问题
+$$ \begin{split} \min &amp;amp;\quad f_0(x)\newline s.t. &amp;amp;\quad f_i(x) \leq 0,i = 1,\ldots,m\newline &amp;amp;\quad h_i(x) = 0, i = 1,\ldots,p \end{split} $$
+通常我们利用拉格朗日乘子法进行优化，也就是
+$$ \mathcal{L}(x, {\mu}, {\lambda}) = f_0(x) + \sum_{i=1}^m \lambda_i f_i(x) + \sum_{i=1}^p \mu_i h_i(x) $$
+现在我们来看下面的极大化问题
+$$ \theta_P(x) = \max_{{\mu}, {\lambda}: \lambda_i \geq 0} \mathcal{L}(x, {\mu}, {\lambda}) $$
+ 如果上式的 $x$ 满足原始的约束  此时 $f_i(x) \leq 0, h_i(x) = 0$，由于是最大化，我们只要令所有的 $\lambda_i = 0$ 即可，换句话说</description>
+    </item>
+    
+    <item>
+      <title>拉格朗日乘子法和KKT条件</title>
+      <link>https://jiandan94.github.io/note/lagrangian-and-kkt/</link>
+      <pubDate>Tue, 22 Sep 2020 00:00:00 +0000</pubDate>
+      
+      <guid>https://jiandan94.github.io/note/lagrangian-and-kkt/</guid>
+      <description>凸优化是优化问题的重要分支之一，也是研究机器学习的重要工具之一。本文和其他几篇以“凸优化”为主题的博客都是我在学习Boyd所著《Convex Optimization》这本书时的笔记。因此，这些博客的内容结构和书中第5、9-11章节的框架相似，我在这里只不过罗列了书中的一些要点和个人的一点思考。
+ 0 引言 KKT条件（Karush–Kuhn–Tucker conditions）是非线性优化问题中最优解的一阶微分判定条件。一般情况下，KKT条件是满足最优解的必要非充分条件。在很多问题中，如SVM等，需要求解的模型是一个凸优化的问题，此时KKT条件是充分必要的。因此，KKT条件对认识和求解SVM等问题有重要的帮助。本文主要介绍KKT条件的基本概念，以及在SVM中的应用。
+1 凸优化问题的引入  In fact the great watershed in optimization isn’t between linearity and nonlinearity, but convexity and nonconvexity. ——Rockafellar
+ 1.1 凸问题的提法 一般的的优化问题可以写成如下形式：
+$$ \begin{split} &amp;amp;\min &amp;amp;&amp;amp; &amp;amp;\quad f_0(x)\newline &amp;amp;s.t. &amp;amp;&amp;amp; &amp;amp;\quad f_i(x) \leq 0,i = 1,\ldots,m\newline &amp;amp; &amp;amp;&amp;amp; &amp;amp;\quad h_i(x) = 0, i = 1,\ldots,p \end{split} $$
+其中 $f_0(x)$ 为目标函数，$f_i(x)$ 为不等式约束，$h_i(x)$ 为等式约束。目前并无有效的算法来求解上述问题。本文主要关注凸优化问题，它和一般的优化问题相比主要有以下三点附加条件：
+ 目标函数必须是凸函数， 不等式约束必须是凸函数， 等式约束必须为仿射函数，即形如 $h_i(x) = a_i^Tx - b_i$，其中 $a_i \in R^n,b_i \in R$。  凸优化问题在经济学中的投资组合优化问题、统计学中的最小二乘问题等实际问题中广泛出现。针对凸优化问题，现在发展出了很多成熟的求解算法。夸张一点地说，一旦某个模型被确定为凸优化问题，那么实际上该问题也就被求解了。</description>
+    </item>
+    
+  </channel>
+</rss>
