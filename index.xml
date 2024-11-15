@@ -1,0 +1,39 @@
+<?xml version="1.0" encoding="utf-8" standalone="yes"?>
+<rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
+  <channel>
+    <title>Home on KAI&#39;s Homepage</title>
+    <link>https://example.org/</link>
+    <description>Recent content in Home on KAI&#39;s Homepage</description>
+    <generator>Hugo -- gohugo.io</generator>
+    <language>en-us</language>
+    <atom:link href="https://example.org/index.xml" rel="self" type="application/rss+xml" />
+    <item>
+      <title>Projects</title>
+      <link>https://example.org/projects/</link>
+      <pubDate>Mon, 01 Jan 0001 00:00:00 +0000</pubDate>
+      <guid>https://example.org/projects/</guid>
+      <description>Academic Projects 高维异常数据下两类支持向量机的统计理论与算法研究国家自然科学基金 · 青年项目 (编号：12401664)，2025.01-2027.12&#xA;主持，在研 高维复杂数据下半监督支持向量学习的理论和应用研究重庆市自然科学基金 · 面上项目 (编号：CSTB2024NSCQ-MSX0855)，2024.07-2027.06&#xA;主持，在研 复杂金融市场的稀疏稳健机器学习与风险对冲研究重庆市教委科技 · 青年项目 (编号：KJQN202400514)，2024.10-2027.09&#xA;主持，在研 稀疏稳健分类模型的正则化理论和应用研究重庆师范大学 · 博士启动基金项目 (编号：23XLB020)，2023.10-2025.10&#xA;主持，已结题 Transverse project 暂无 </description>
+    </item>
+    <item>
+      <title>Publications</title>
+      <link>https://example.org/publications/</link>
+      <pubDate>Mon, 01 Jan 0001 00:00:00 +0000</pubDate>
+      <guid>https://example.org/publications/</guid>
+      <description>Accepted and published Fused robust geometric nonparallel hyperplane support vector machine for pattern classification Ruiyao Gao, Kai Qi, Hu Yang*. Expert Systems with Applications, 2024, 236: 121331. Capped asymmetric elastic net support vector machine for robust binary classification Kai Qi, Hu Yang*. International Journal of Intelligent Systems, 2023, 2023(1): 2201330. LS-GNHSVM: a novel unified nonparallel hyperplane classifier with geometrical rationality Kai Qi, Hu Yang*. Expert Systems with Applications, 2023, 215: 119413.</description>
+    </item>
+    <item>
+      <title>Students</title>
+      <link>https://example.org/students/</link>
+      <pubDate>Mon, 01 Jan 0001 00:00:00 +0000</pubDate>
+      <guid>https://example.org/students/</guid>
+      <description>暂无</description>
+    </item>
+    <item>
+      <title>Talks</title>
+      <link>https://example.org/talks/</link>
+      <pubDate>Mon, 01 Jan 0001 00:00:00 +0000</pubDate>
+      <guid>https://example.org/talks/</guid>
+      <description>Capped asymmetric elastic net support vector machine for robust binary classification ICSA 2023 China Conference (2023)，oral report Chengdu · China&#xA;Joint rescaled asymmetric least squared nonparallel support vector machine with a stochastic quasi-Newton based algorithm (Student best paper) The 8th annual conference of CQSIAM (2022)，oral report Chongqing · China&#xA;Joint sparse principal component regression with robust property (Student best paper) The 7th annual conference of CQSIAM (2021)，oral report Chongqing · China</description>
+    </item>
+  </channel>
+</rss>
